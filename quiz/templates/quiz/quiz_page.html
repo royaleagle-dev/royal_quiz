@@ -1,0 +1,47 @@
+{%extends "quiz/base.html"%}
+
+{%block content%}
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags == 'success' %} class="w3-text-green" {%else%} class = "w3-text-red"{% endif %}><small>{{ message }}</small></li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+    <h2>Question: <button type = "button" style = "float:right" class = 'btn btn-danger'>Score: {{user_score.score}}</button> 
+
+        <button type = "button" style = "float:right" class = 'btn btn-info'><a href = "{%url 'index_test'%}">Home</a></button>
+        <button type = "button" style = "float:right" class = "btn btn-warning" onclick = "alert('confirm end exam?')"><a href = "{%url 'end_exam'%}">End Exam</a></button>
+    </h2>
+    
+    <p style = "text-transform: capitalize;">{{question.title}}</p>
+
+    <form action = '{%url "mark" question.id%}' method = "post">
+        {%csrf_token%}
+    {%for choice in choices%}
+        <input type = "radio" name = "choice" id = "choice{{forloop.counter}}" value = "{{choice.id}}">
+        <label for = "choice{{forloop.counter}}">{{choice.choice}}</label><br>
+    {%endfor%}
+        
+        <input type = "submit" value = "NEXT" style = "float:right" class = "btn btn-info">
+        
+    </form>
+
+    <script>
+
+    function previous(){
+        window.history.back();
+    }
+    
+    </script>
+
+    <button type = "button" class = 'btn btn-info' style = "float:left" onclick = "previous()">Previous</button>
+
+{%endblock%}
+
+{%block title%}
+Quiz
+{%endblock%}
+
