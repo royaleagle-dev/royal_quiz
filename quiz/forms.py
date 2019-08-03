@@ -7,3 +7,4 @@ class SignupForm(forms.ModelForm):
         model = MyUser
         fields = '__all__'
         exclude = ['score', 'last_score']
+        #exclude score and last_score from signin form
