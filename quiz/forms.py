@@ -6,4 +6,4 @@ class SignupForm(forms.ModelForm):
     class Meta:
         model = MyUser
         fields = '__all__'
-        exclude = ['score']
+        exclude = ['score', 'last_score']
