@@ -1,2 +1,3 @@
 # royal_quiz
-an online quiz app written in python
+an online quiz application written with python using Django,
+HTML, CSS and javascript
