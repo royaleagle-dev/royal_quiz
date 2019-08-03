@@ -9,24 +9,52 @@
         <script></script>
         <!--metas-->
         <meta name = "author" content = "Okunubi Ayotunde">
+        <meta name = "viewport" content = "width=device-width, initial-scale=1"
     </head>
     
     <body>
-        <div class = "container">
+        <div class = "container-fluid">
             
             <div class = "row">
                 
                 <div class = "col">
-                    
-                    <div id = "question_container" class = "w3-topbar w3-border-red w3-bottombar">
+
+                    <div class = "w3-green" style = "height:50px; margin-bottom:15px;">
+                        {%block bar%}
+
+                        <div class = "w3-topbar w3-green">
+                            <a href = "{%url 'index_test'%}" class = "w3-bar-item bigLinkText btn btn-success" style = "margin-left:20px;">Home</a>
+                            <a href = "{%url 'logout'%}" class = "w3-bar-item bigLinkText btn btn-success" style = "margin-left:20px;">LogOut</a>
+                            <a href = "" class = "w3-bar-item bigLinkText btn btn-success" style = "margin-left:20px;">Dashboard</a>
+                            <a href = "" class = "w3-bar-item bigLinkText btn btn-success" style = "margin-left:20px;">About</a>
+                        </div>
+
+
+                        {%endblock%}
+                    </div>
+
+
+                        <div>
+                            {%block info%}
+
+
+                            <div class = "w3-panel w3-yellow w3-text-black" style = "height:30px;">
+                                <p>User: {%if user.is_authenticated%} <span class = "text-danger">{{user.username}}</span>{%endif%}      LastScore: {%if user.is_authenticated%} <span class = "text-danger">{{USER.last_score}}</span>{%endif%}</p>
+                            </div>
+
+                            {%endblock%}
+                        </div>
+
+
+                    <div>
                         {%block content%}
                         {%endblock%}
                     </div>
-                    
+
                 </div>
-                
+
             </div>
-            
+                    
         </div>
     </body>
 </html>

@@ -2,18 +2,8 @@
 
 {%block content%}
 <div class = "row">
-    <div class = "col-md-3">
     
-        <a href = "{%url 'login'%}" type = "button" class = "btn btn-info">Login</a>
-        <a href = "{%url 'logout'%}" type = "button" class = "btn btn-info">Logout</a>
-
-        <p>User: {%if user.is_authenticated%} {{user.username}}{%endif%}</p>
-        <p>LastScore: {%if user.is_authenticated%} {{USER.last_score}}{%endif%}</p>
-        
-        
-    </div>
-    
-    <div class = "col-md-9">
+    <div class = "col">
     <h2>Available Questions: {{available_question}}</h2>
     <a href = "{%url 'quiz_page' 6%}" class = "btn btn-danger littleSpaceDown" type = "button" onclick = "alert('Welcome to the Quiz Module')">Start Quiz</a>
     </div>
