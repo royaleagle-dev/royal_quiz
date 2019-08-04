@@ -10,21 +10,20 @@ import random
 
 # Create your views here.
 
-@login_required
 def index_test(request):
     category_count = Category.objects.all().count()
     category = Category.objects.all()
     available_question = Question.objects.count()
-    user = request.user
-    current_user = User.objects.get(id = user.id)
-    USER = MyUser.objects.get(username = current_user.username)
-    user_score = USER.score
-    USER.score = 0
-    USER.save()
+    #user = request.user
+    #current_user = User.objects.get(id = user.id)
+    #USER = MyUser.objects.get(username = current_user.username)
+    #user_score = USER.score
+    #USER.score = 0
+    #USER.save()
     ctx = {
     'available_question':available_question,
     #'user_score':user_score,
-    'USER': USER,
+    #'USER': USER,
     'category':category,
     'category_count':category_count,
     }
@@ -33,9 +32,13 @@ def index_test(request):
 
 def category_detail(request, category):
     question = Question.objects.filter(category__title__exact = category)
+    question_count = Question.objects.filter(category__title__exact = category).count()
+    subject = Category.objects.filter(title__exact = category)
     ctx = {
         'category':category,
         'question':question,
+        'question_count':question_count,
+        'subject':subject
         
     }
     return render(request, 'quiz/category_detail.html', ctx)

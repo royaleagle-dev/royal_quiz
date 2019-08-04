@@ -5,12 +5,20 @@
     <div class = "col">
         <h1 align = "center" class = "w3-text-red w3-hover-shadow w3-topbar w3-bottombar w3-border-green">{{category}}</h1>
         <div class = "w3-panel w3-light-grey" align = "center">
-            <p><strong>Available Question:</strong></p>
+            <p><strong>Available Question:</strong> <span class = "badge badge-success">{{question_count}}</span></p>
             <p><strong>Question Mode:</strong> Objective</p>
             <p><strong>Instructions: </strong> Remember to click on 'End Exam' to get your total score before quitting</p>
             <p><strong>Negative Marks:</strong> Yes</p>
             <small>Powered By: <span style = "color:brown; font-style:oblique">_________</span></small>
         </div>
+        
+        <div>
+            <h2> Sections: </h2>
+            {%for item in subject%}
+            <a href = "" class = "btn btn-block btn-success">{{item.subject}}</a>
+        {%endfor%}
+        </div>
+        
     </div>
     
 </div>
