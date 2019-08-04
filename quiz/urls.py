@@ -6,6 +6,7 @@ urlpatterns = [
     path('quiz_page/<int:pk>', views.quiz_page, name = 'quiz_page'),
     path('<int:pk>/mark/', views.mark, name = 'mark'),
     path('signup/', views.signup, name = 'signup'),
-    path('end_exam/', views.end_exam, name = 'end_exam')
+    path('end_exam/', views.end_exam, name = 'end_exam'),
+    path('<str:category>/', views.category_detail, name = 'category_detail'),
 
 ]

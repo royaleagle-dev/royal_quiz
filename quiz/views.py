@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from quiz.models import Question, Choice, MyUser
+from quiz.models import Question, Choice, MyUser, Category
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib import messages
@@ -12,6 +12,8 @@ import random
 
 @login_required
 def index_test(request):
+    category_count = Category.objects.all().count()
+    category = Category.objects.all()
     available_question = Question.objects.count()
     user = request.user
     current_user = User.objects.get(id = user.id)
@@ -22,9 +24,21 @@ def index_test(request):
     ctx = {
     'available_question':available_question,
     #'user_score':user_score,
-    'USER': USER
+    'USER': USER,
+    'category':category,
+    'category_count':category_count,
     }
     return render(request, 'quiz/index.html', ctx)
+
+
+def category_detail(request, category):
+    question = Question.objects.filter(category__title__exact = category)
+    ctx = {
+        'category':category,
+        'question':question,
+        
+    }
+    return render(request, 'quiz/category_detail.html', ctx)
 
 
 

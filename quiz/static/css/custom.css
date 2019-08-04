@@ -14,3 +14,9 @@
 .bigLinkText{
 	font-size: 1.2em;
 }
+
+[marker = head]{
+    color: white;
+    font-size: 1.5em;
+}
+
