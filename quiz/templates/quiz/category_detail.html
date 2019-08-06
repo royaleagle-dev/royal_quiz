@@ -14,8 +14,8 @@
         
         <div>
             <h2> Sections: </h2>
-            {%for item in subject%}
-            <a href = "" class = "btn btn-block btn-success">{{item.subject}}</a>
+            {%for item in section%}
+            <a href = "{%url 'select' item.title%}" class = "btn btn-block btn-success">{{item.title}}----{{item.subject}}</a>
         {%endfor%}
         </div>
         

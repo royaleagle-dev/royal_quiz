@@ -18,7 +18,7 @@
     
     <p style = "text-transform: capitalize;">{{question.title}}</p>
 
-    <form action = '{%url "mark" question.id%}' method = "post">
+    <form action = '{%url "mark" question.id question.subject%}' method = "post">
         {%csrf_token%}
     {%for choice in choices%}
         <input type = "radio" name = "choice" id = "choice{{forloop.counter}}" value = "{{choice.id}}">
@@ -38,6 +38,22 @@
     </script>
 
     <button type = "button" class = 'btn btn-info' style = "float:left" onclick = "previous()">Previous</button>
+
+
+{{question_id_list}}
+
+
+
+<div data-description = "notice" class = "w3-yellow w3-panel w3-hover-shadow">
+    <h3 style = "text-decoration:underline;">Note</h3>
+    <p><strong>You have loaded this page:</strong> <span class = "badge badge-danger">{{num_visits}}</span> times</p>
+    <ul>
+    
+    <li>This page will display the number of times/questions you choose in the question parameter.</li>
+    <li> After that you'll be redirected out of this page to another page</li>
+        
+    </ul>
+</div>
 
 {%endblock%}
 

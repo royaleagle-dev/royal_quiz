@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from quiz.models import Question, Choice, MyUser, Category
+from quiz.models import Question, Choice, MyUser, Category, Subject
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib import messages
@@ -7,60 +7,102 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from . forms import SignupForm
 import random
+from django.http import QueryDict
+
+
+question_id_list = [ ]
 
 # Create your views here.
-
+@login_required
 def index_test(request):
     category_count = Category.objects.all().count()
+    question_count = Question.objects.all().count()
     category = Category.objects.all()
     available_question = Question.objects.count()
-    #user = request.user
-    #current_user = User.objects.get(id = user.id)
-    #USER = MyUser.objects.get(username = current_user.username)
-    #user_score = USER.score
-    #USER.score = 0
-    #USER.save()
+    user = request.user
+    current_user = User.objects.get(id = user.id)
+    USER = MyUser.objects.get(username = current_user.username)
+    user_score = USER.score
+    USER.score = 0
+    USER.save()
+    
     ctx = {
     'available_question':available_question,
-    #'user_score':user_score,
-    #'USER': USER,
+    'USER': USER,
     'category':category,
     'category_count':category_count,
+    'question_count':question_count,
     }
     return render(request, 'quiz/index.html', ctx)
 
+@login_required
+def quiz_param(request, subject):
+    current_user = request.user
+    user = MyUser.objects.get(username = current_user.username)    
+    question_range = int(user.temp_question_range)
+    ctx = {
+        'subject':subject
+    }
+    return render(request, 'quiz/quiz_param.html', ctx)
+
 
 def category_detail(request, category):
-    question = Question.objects.filter(category__title__exact = category)
+    section = Subject.objects.filter(category__title__exact = category)
     question_count = Question.objects.filter(category__title__exact = category).count()
-    subject = Category.objects.filter(title__exact = category)
     ctx = {
         'category':category,
-        'question':question,
         'question_count':question_count,
-        'subject':subject
-        
+        'section': section
     }
     return render(request, 'quiz/category_detail.html', ctx)
 
 
+def process(request, subject):
+    total_question = request.POST.get('tot_quiz_question', False)
+    total_question = int(total_question)
+    current_user = request.user
+    user = MyUser.objects.get(username = current_user.username)
+    user.temp_question_range = total_question
+    user.score = 0
+    user.save()
+    associated_questions = Question.objects.filter(subject__title = subject)
+    global question_id_list
+    for item in associated_questions:
+        question_id_list.append(item.id)
+    return redirect('quiz_page', subject = subject, pk = 1)
+
+
 
 @login_required
-def quiz_page(request, pk):
-    question = get_object_or_404(Question, pk = pk)
+def quiz_page(request, pk, subject):
+    question = get_object_or_404(Question, pk = pk, subject__title = subject)
     choices = Choice.objects.filter(question__exact = question)
     user = request.user
     current_user = User.objects.get(id = user.id)
+    user = MyUser.objects.get(username = current_user.username)
     user_score = MyUser.objects.get(username = current_user.username)
+    global question_id_list
+
+     #sessions
+    #number of visits to this view as counted in the session variable
+    num_visits = request.session.get('num_visits',0)
+    request.session ['num_visits'] = num_visits +1
+    
+    if num_visits == int(user.temp_question_range):
+        del request.session['num_visits']
+        return redirect ('end_exam')
+    
     ctx = {
         'question':question,
         'choices':choices,
-        'user_score':user_score
+        'user_score':user_score,
+        'num_visits': num_visits,
+        #'question_id_list': question_id_list
     }
     return render(request, 'quiz/quiz_page.html', ctx)
 
 @login_required
-def mark(request, pk):
+def mark(request, pk, subject):
     user = User()
     
     question = get_object_or_404(Question, pk = pk)
@@ -74,25 +116,32 @@ def mark(request, pk):
         user_mark = MyUser.objects.get(username = user.username)
         user_mark.score += score
         user_mark.save()
+        user.last_score = user_mark.score
+        user_mark.save()
         messages.success(request, " CORRECT! you scored {0}".format(score))
         
-        total_question = Question.objects.all().count()
-        incrementor = random.randrange(question.id, total_question+1)
-        next_question = question.id+incrementor
-        if next_question > total_question:
-            next_question = total_question-question.id
-            if next_question == 0:
-                next_question = random.randrange(1, total_question)
+        #total_question = Question.objects.all().count()
+        #incrementor = random.randrange(question.id, total_question+1)
+        #next_question = question.id+incrementor
+        #if next_question > total_question:
+         #   next_question = total_question-question.id
+          #  if next_question == 0:
+           #     next_question = random.randrange(1, total_question)
+        global question_id_list
+        next_question = random.choice(question_id_list)
         
-        return HttpResponseRedirect(reverse('quiz_page', args = str(next_question)))
+        return HttpResponseRedirect(reverse('quiz_page', args = [str(subject), str(next_question,)]))
     else:
         total_question = Question.objects.all().count()
-        incrementor = random.randrange(question.id, total_question+1)
-        next_question = question.id+incrementor
-        if next_question > total_question:
-            next_question = total_question-question.id
-            if next_question == 0:
-                next_question = random.randrange(1, total_question)
+        #incrementor = random.randrange(question.id, total_question+1)
+        #next_question = question.id+incrementor
+        #if next_question > total_question:
+         #   next_question = total_question-question.id
+          #  if next_question == 0:
+           #     next_question = random.randrange(1, total_question)
+            
+        
+        next_question = random.choice(question_id_list)
 
         answer = 'incorrect'
         score = -10
@@ -101,11 +150,14 @@ def mark(request, pk):
         user_id = current_user.id
         user = User.objects.get(id = user_id)
         user_mark = MyUser.objects.get(username = user.username)
+        
         user_mark.score += score
+        user_mark.save()
+        user.last_score = user_mark.score
         user_mark.save()
         
         messages.error(request, "sorry incorrect answer")
-        return HttpResponseRedirect(reverse('quiz_page', args = str(next_question)))
+        return HttpResponseRedirect(reverse('quiz_page', args = [str(subject), str(next_question,)]))
     
 
 def signup(request):

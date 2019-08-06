@@ -2,21 +2,51 @@
 
 {%block content%}
 <div class = "row">
+    <div class = "col">
+        <div class = "row">
     
-    <div class = "col-md-3 w3-green">
-        <h2 marker = "head">Choose a Category:</h2>
-        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-            {%for item in category%}
-                <a class="nav-link btn btn-success w3-round-xxlarge" id="v-pills-home-tab" data-toggle="pill" href="{%url 'category_detail' item.title%}" role="tab" aria-controls="v-pills-home" aria-selected="true">{{item.title}}</a>
-            {%endfor%}
+            <div class = "col-md-3 w3-green">
+                <h2 marker = "head">Choose a Category:</h2>
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    {%for item in category%}
+                        <a class="nav-link btn btn-success w3-round-xxlarge" id="v-pills-home-tab" data-toggle="pill" href="{%url 'category_detail' item.title%}" role="tab" aria-controls="v-pills-home" aria-selected="true">{{item.title}}</a>
+                    {%endfor%}
+                </div>
+            </div>
+    
+            <div class = "col-md-9">
+        
+                <div class = "w3-card-4 w3-light-grey w3-round-xxlarge w3-container">
+        
+                    <h3 class = "text-success"> Welcome </h3>
+            
+                    <p>Welcome to the official Royal Quiz app. 
+                    The royal quiz app was developed to solve the problem of unavailability of practice platform to students preparing for CBT Exams at all levels      </p>
+            
+                <h3>Current Version:</h3>
+                <button class = "btn btn-danger">1.1.0 <i>beta</i></button>
+            
+                <h3>Total Question Available:</h3>
+                <button class = "btn btn-danger littleSpaceDown">{{question_count}}</button>
+            
+                </div>
+        
+            </div>
+    
         </div>
-    </div>
+        
+        <div class = "w3-panel w3-yellow" align = "center">
+            <h3 style = "color:red">Disclaimer</h3>
+            <p class = "text-danger" style = "font-style:oblique">This app is licenced under GPL 3.0 and the creator will not be held responsible for any damages caused by this app.</p>
+            <p class = "text-danger" style = "font-style:oblique">Also All questions on this app are questions which represents the views of all our users (that is, questions submitted by our users as seen fit by them). Questions here are not replica of official exam questions as such users are adviced to read well, prepare for their exams and practice with our platform</p>
+            <p class = "text-danger" style = "font-style:oblique">Also All questions on this app are questions which represents the views of all our users (that is, questions submitted by our users as seen fit by them). Questions here are not replica of official exam questions as such users are adviced to read well, prepare for their exams and practice with our platform</p>
+            
+            
+        
+        </div>
     
-    <div class = "col-md-9">
-    <h2>Available Questions: {{available_question}}</h2>
-    <a href = "{%url 'quiz_page' 6%}" class = "btn btn-danger littleSpaceDown" type = "button" onclick = "alert('Welcome to the Quiz Module')">Start Quiz</a>
-    </div>
     
+    </div>
 </div>
 {%endblock%}
 

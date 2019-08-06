@@ -1,0 +1,41 @@
+{%extends "quiz/base.html"%}
+
+{%block title%}
+{{subject}}
+{%endblock%}
+
+{%block content%}
+
+<div class = "row">
+    <div class = "col">
+        <h1 align = "center" class = "w3-text-red w3-hover-shadow w3-topbar w3-bottombar w3-border-green">{{subject}}</h1>
+    
+    <div>
+        <h2 marker = "sub-head" align = center> Set Question Parameters:</h2>
+        <form method = "post" action = "{%url 'process' subject%}">
+            {%csrf_token%}
+            
+            <fieldset>
+                
+                <legend>Question Params:</legend>
+                
+                <input type = radio name = "tot_quiz_question" value = "5" checked><label>5 Questions  </label>
+                
+                <input type = radio name = "tot_quiz_question" value = "10"><label>10 Questions  </label>
+                
+                <input type = radio name = "tot_quiz_question" value = "15"><label>15 Questions  </label>
+                
+                <input type = radio name = "tot_quiz_question" value = "20"><label>20 Questions  </label>
+                
+                <input type = "submit" value = "START>>>" class = "btn btn-danger" style = "float:right">
+            
+            </fieldset>
+            
+        </form>
+    
+    </div>
+    
+    </div>
+</div>
+
+{%endblock%}
