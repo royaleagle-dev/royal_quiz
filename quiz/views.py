@@ -117,7 +117,7 @@ def mark(request, pk, subject):
         global question_id_list
         question_id_list.append(items.id)
         
-    next_question = random.choice(question_list_id)
+    next_question = random.choice(question_id_list)
         
     if selected_choice.flag == True:
         answer = 'correct'
