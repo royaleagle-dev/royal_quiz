@@ -115,7 +115,7 @@ def mark(request, pk, subject):
     associated_question = Question.objects.filter(subject__title = subject)
     for items in associated_question:
         global question_id_list
-        question_id_list.append(item.id)
+        question_id_list.append(items.id)
         
     next_question = random.choice(question_list_id)
         
