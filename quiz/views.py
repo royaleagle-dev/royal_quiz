@@ -97,7 +97,7 @@ def quiz_page(request, pk, subject):
         'choices':choices,
         'user_score':user_score,
         'num_visits': num_visits,
-        #'question_id_list': question_id_list
+        'question_id_list': question_id_list
     }
     return render(request, 'quiz/quiz_page.html', ctx)
 
@@ -123,28 +123,11 @@ def mark(request, pk, subject):
         user.last_score = user_mark.score
         user_mark.save()
         messages.success(request, " CORRECT! you scored {0}".format(score))
-        
-        #total_question = Question.objects.all().count()
-        #incrementor = random.randrange(question.id, total_question+1)
-        #next_question = question.id+incrementor
-        #if next_question > total_question:
-         #   next_question = total_question-question.id
-          #  if next_question == 0:
-           #     next_question = random.randrange(1, total_question)
-        
         return HttpResponseRedirect(reverse('quiz_page', args = [str(subject), str(next_question,)]))
+    
     else:
         total_question = Question.objects.all().count()
-        #incrementor = random.randrange(question.id, total_question+1)
-        #next_question = question.id+incrementor
-        #if next_question > total_question:
-         #   next_question = total_question-question.id
-          #  if next_question == 0:
-           #     next_question = random.randrange(1, total_question)
-            
-        
-        next_question = random.choice(question_id_list)
-
+        #next_question = random.choice(question_id_list)
         answer = 'incorrect'
         score = -10
         
