@@ -107,6 +107,10 @@ def mark(request, pk, subject):
     
     question = get_object_or_404(Question, pk = pk)
     selected_choice = question.choice_set.get(pk=request.POST['choice'])
+    
+    global question_id_list
+    next_question = random.choice(question_id_list)
+        
     if selected_choice.flag == True:
         answer = 'correct'
         score = 10
@@ -127,8 +131,6 @@ def mark(request, pk, subject):
          #   next_question = total_question-question.id
           #  if next_question == 0:
            #     next_question = random.randrange(1, total_question)
-        global question_id_list
-        next_question = random.choice(question_id_list)
         
         return HttpResponseRedirect(reverse('quiz_page', args = [str(subject), str(next_question,)]))
     else:
