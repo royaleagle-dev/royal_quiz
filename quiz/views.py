@@ -82,7 +82,7 @@ def quiz_page(request, pk, subject):
     user = MyUser.objects.get(username = current_user.username)
     user_score = MyUser.objects.get(username = current_user.username)
     
-    associated_question = Questions.objects.filter(subject__title = subject)
+    associated_question = Question.objects.filter(subject__title = subject)
     for item in associated_question:
         global question_id_list
         question_id_list.append(item)
