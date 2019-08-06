@@ -113,9 +113,8 @@ def mark(request, pk, subject):
     selected_choice = question.choice_set.get(pk=request.POST['choice'])
     
     associated_question = Question.objects.filter(subject__title = subject)
-    for items in associated_question:
-        global question_id_list
-        question_id_list.append(items.id)
+    
+    global question_id_list
         
     next_question = random.choice(question_id_list)
         
