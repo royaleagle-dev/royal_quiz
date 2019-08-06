@@ -69,7 +69,7 @@ def process(request, subject):
     global question_id_list
     for item in associated_questions:
         question_id_list.append(item.id)
-    return redirect('quiz_page', subject = subject, pk = 1)
+    return redirect('quiz_page', subject = subject, pk = random.choice(question_id_list))
 
 
 
@@ -81,7 +81,11 @@ def quiz_page(request, pk, subject):
     current_user = User.objects.get(id = user.id)
     user = MyUser.objects.get(username = current_user.username)
     user_score = MyUser.objects.get(username = current_user.username)
-    global question_id_list
+    
+    associated_question = Questions.objects.filter(subject__title = subject)
+    for item in associated_question:
+        global question_id_list
+        question_id_list.append(item)
 
      #sessions
     #number of visits to this view as counted in the session variable
@@ -108,8 +112,12 @@ def mark(request, pk, subject):
     question = get_object_or_404(Question, pk = pk)
     selected_choice = question.choice_set.get(pk=request.POST['choice'])
     
-    global question_id_list
-    next_question = random.choice(question_id_list)
+    associated_question = Question.objects.filter(subject__title = subject)
+    for items in associated_question:
+        global question_list_id
+        question_list_id.append(item.id)
+        
+    next_question = random.choice(question_list_id)
         
     if selected_choice.flag == True:
         answer = 'correct'
