@@ -101,7 +101,7 @@ def quiz_page(request, pk, subject):
         'choices':choices,
         'user_score':user_score,
         'num_visits': num_visits,
-        'question_id_list': question_id_list
+        #'question_id_list': question_id_list
     }
     return render(request, 'quiz/quiz_page.html', ctx)
 
