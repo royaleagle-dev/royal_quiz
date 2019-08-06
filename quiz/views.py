@@ -85,7 +85,7 @@ def quiz_page(request, pk, subject):
     associated_question = Question.objects.filter(subject__title = subject)
     for item in associated_question:
         global question_id_list
-        question_id_list.append(item)
+        question_id_list.append(item.id)
 
      #sessions
     #number of visits to this view as counted in the session variable
@@ -114,8 +114,8 @@ def mark(request, pk, subject):
     
     associated_question = Question.objects.filter(subject__title = subject)
     for items in associated_question:
-        global question_list_id
-        question_list_id.append(item.id)
+        global question_id_list
+        question_id_list.append(item.id)
         
     next_question = random.choice(question_list_id)
         
