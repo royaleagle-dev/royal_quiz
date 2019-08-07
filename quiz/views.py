@@ -37,6 +37,8 @@ def index_test(request):
 
 @login_required
 def quiz_param(request, subject):
+    global question_id_list
+    question_id_list = [ ]
     current_user = request.user
     user = MyUser.objects.get(username = current_user.username)    
     question_range = int(user.temp_question_range)
