@@ -25,6 +25,8 @@ def index_test(request):
     user_score = USER.score
     USER.score = 0
     USER.save()
+    global question_id_list
+    question_id_list = []
     
     ctx = {
     'available_question':available_question,
@@ -37,8 +39,8 @@ def index_test(request):
 
 @login_required
 def quiz_param(request, subject):
-    global question_id_list
-    question_id_list = [ ]
+    #global question_id_list
+    #question_id_list = [ ]
     current_user = request.user
     user = MyUser.objects.get(username = current_user.username)    
     question_range = int(user.temp_question_range)
@@ -103,7 +105,7 @@ def quiz_page(request, pk, subject):
         'choices':choices,
         'user_score':user_score,
         'num_visits': num_visits,
-        #'question_id_list': question_id_list
+        'question_id_list': question_id_list
     }
     return render(request, 'quiz/quiz_page.html', ctx)
 
