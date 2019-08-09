@@ -9,6 +9,6 @@ urlpatterns = [
     path('end_exam/', views.end_exam, name = 'end_exam'),
     path('<str:category>/', views.category_detail, name = 'category_detail'),
     path('set_quiz/<str:subject>/', views.quiz_param, name = 'select'),
-    path('set_quiz/process/<str:subject>/', views.process, name = 'process')
+    path('set_quiz/process/<str:subject>/', views.process, name = 'process'),
 
 ]

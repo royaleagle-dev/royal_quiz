@@ -8,7 +8,18 @@ from django.contrib.auth.decorators import login_required
 from . forms import SignupForm
 import random
 from django.http import QueryDict
+from django.views.generic import ListView, DetailView
 
+class CategoryListView(ListView):
+    model = Category
+    template_name = 'quiz/mycatlist.html'
+    context_object_name = 'mycatlist'
+
+def contact(request):
+    return render (request, 'quiz/contact.html')
+
+def robots(request):
+    return render(request, 'quiz/robots.txt')
 
 question_id_list = [ ]
 

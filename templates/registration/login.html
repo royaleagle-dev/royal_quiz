@@ -2,7 +2,8 @@
 
 {% block content %}
 
-        <h1 class = "w3-text-green">Login | <small><a href = "{%url 'signup'%}">Signup</a></small></h1>
+<div align = "center">
+<h1 class = "w3-text-green">Login | <small><a href = "{%url 'signup'%}">Signup</a></small></h1>
 
 {% if form.errors %}
 <p class = "text-danger">Your username and password didn't match. Please try again.</p>
@@ -28,7 +29,6 @@
     <td>{{ form.password }}</td>
 </tr>
 </table>
-<br>
 <input type="submit" value="login" class = "btn btn-success btn-block">
 <input type="hidden" name="next" value="{{ next }}">
 </form>
@@ -36,6 +36,8 @@
 {# Assumes you setup the password_reset view in your URLconf #}
 <p><a href="{% url 'password_reset' %}" class = " btn btn-info disabled">Lost password?</a></p>
 <p><a href="{% url 'signup' %}">Need an Account?</a></p>
+
+</div>
 
 {% endblock %}
 

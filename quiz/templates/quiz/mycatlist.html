@@ -1,0 +1,13 @@
+{%extends "quiz/base.html"%}
+
+{%block content%}
+
+<div class="list-group list-group-flush" align = "center">
+         {%for item in mycatlist%}
+            <a class="list-group-item list-group-item-action bg-light" href="{%url 'category_detail' item.title%}">{{item.title}}</a>
+        {%endfor%}
+      </div>
+
+{%endblock%}
+
+{%block title%}Contact Us{%endblock%}

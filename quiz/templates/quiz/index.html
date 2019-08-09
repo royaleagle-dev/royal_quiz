@@ -1,58 +1,80 @@
 {%extends "quiz/base.html"%}
 
 {%block content%}
-<div class = "row">
-    <div class = "col">
-        <div class = "row">
-    
-            <div class = "col-md-3 w3-green">
-                <h2 marker = "head">Choose a Category:</h2>
-                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                    {%for item in category%}
-                        <a class="nav-link btn btn-success w3-round-xxlarge" id="v-pills-home-tab" data-toggle="pill" href="{%url 'category_detail' item.title%}" role="tab" aria-controls="v-pills-home" aria-selected="true">{{item.title}}</a>
-                    {%endfor%}
-                </div>
-            </div>
-    
-            <div class = "col-md-9">
-        
-                <div class = "w3-card-4 w3-light-grey w3-round-xxlarge w3-container">
-        
-                    <h3 class = "text-success"> Welcome </h3>
-            
-                    <p>Welcome to the official Royal Quiz app. 
-                    The royal quiz app was developed to solve the problem of unavailability of practice platform to students preparing for CBT Exams at all levels      </p>
-            
-                <h3>Current Version:</h3>
-                <button class = "btn btn-danger">1.1.0 <i>stable</i></button>
-            
-                    <h3>Total Question Available: <span class = "badge badge-success">{{question_count}}</span></h3>
-                    
-                <div class = "w3-text-white w3-red w3-round-xxlarge w3-container">
-                <h3>Notice:</h3>
-                <p>Please make sure you reload/refresh this page after finishing an exam to avoid an Error 404</p>
-                </div>
-            
-                </div>
-        
-            </div>
-    
-        </div>
-        
-        <div class = "w3-panel w3-yellow" align = "center">
-            <h3 style = "color:red">Disclaimer</h3>
-            <p class = "text-danger" style = "font-style:oblique">This app is licenced under GPL 3.0 and the creator will not be held responsible for any damages caused by this app.</p>
-            <p class = "text-danger" style = "font-style:oblique">Also All questions on this app are questions which represents the views of all our users (that is, questions submitted by our users as seen fit by them). Questions here are not replica of official exam questions as such users are adviced to read well, prepare for their exams and practice with our platform</p>
-            
-            
-        
-        </div>
-    
-    
-    </div>
-</div>
-{%endblock%}
+<div class="d-flex" id="wrapper">
 
-{%block title%}
-Home
+    <!-- Sidebar -->
+    <div class="bg-light border-right" id="sidebar-wrapper">
+      <div class="sidebar-heading">Choose Category</div>
+      <div class="list-group list-group-flush">
+         {%for item in category%}
+            <a class="list-group-item list-group-item-action bg-light" href="{%url 'category_detail' item.title%}">{{item.title}}</a>
+        {%endfor%}
+      </div>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            <!--content goes here-->
+            
+            <div class = "card border-success mb-3 bg-dark">
+                <div class = "card-body text-success">
+                    <div class = "card-header bg-secondary text-warning">Welcome</div>
+                    <p>Welcome to the official Royal Quiz app. 
+                    The royal quiz app was developed to solve the problem of unavailability of practice platform to students preparing for CBT Exams at all levels.</p>
+                    
+                </div>
+            </div>
+            
+            <div class = "card">
+                <div class = "card-body text-info">
+                    <div class = "card-header">Relevant Questions</div>
+                    <p> Be rest assured all questions and resources found on this app are 100% relevant. we are always doing our best to make sure all question being added to the database go through a rigorous testing process.</p>
+                    
+                </div>
+            
+            </div>
+            
+            <div class = "card border-success mb-3 bg-dark">
+                <div class = "card-body text-success">
+                    <div class = "card-header bg-secondary text-warning">Instant Answer</div>
+                    <p> Our app features an Instant answer feature which enables the app to determine if you are right or wrong in real-time. you don't have to attempt the whole quiz to know your score. just by answering one question, you can know if you are right or not.</p>
+                    
+                </div>
+            
+            </div>
+            
+            <div class = "card">
+                <div class = "card-body text-info">
+                    <div class = "card-header">Simple Interface</div>
+                    <p> Our interface is designed with everyone in mind. It's simple and easy to use, form the login page to the main quiz page, our app features a clean interface</p>
+                    
+                </div>
+            
+            </div>
+             
+             
+            <!--content ends here-->
+            
+            
+      </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+
+  </div>
+  <!-- /#wrapper -->
+
+  <!-- Bootstrap core JavaScript -->
+
+  <!-- Menu Toggle Script -->
+  <script>
+    $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+    });
+  </script>
+
 {%endblock%}
+{%block title%}Home{%endblock%}
