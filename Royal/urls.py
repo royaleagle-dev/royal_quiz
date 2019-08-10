@@ -27,8 +27,15 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('contact/', views.contact, name = 'contact'),
     path('my_categories/', views.CategoryListView.as_view(), name = 'mycatlist'),
+    
 ]
 
 urlpatterns += [
     url(r'^robots\.txt$', TemplateView.as_view(template_name="quiz/robots.txt", content_type='text/plain')),
+]
+
+]
+
+urlpatterns += [
+    url(r'^google946c8cf2471b95fe.html\.txt$', TemplateView.as_view(template_name="quiz/google946c8cf2471b95fe.html", content_type='text/plain')),
 ]
