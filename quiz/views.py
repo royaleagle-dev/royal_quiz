@@ -24,24 +24,23 @@ def robots(request):
 question_id_list = [ ]
 
 # Create your views here.
-@login_required
-def index_test(request):
+def index(request):
     category_count = Category.objects.all().count()
     question_count = Question.objects.all().count()
     category = Category.objects.all()
     available_question = Question.objects.count()
-    user = request.user
-    current_user = User.objects.get(id = user.id)
-    USER = MyUser.objects.get(username = current_user.username)
-    user_score = USER.score
-    USER.score = 0
-    USER.save()
+    #user = request.user
+    #current_user = User.objects.get(id = user.id)
+    #USER = MyUser.objects.get(username = current_user.username)
+    #user_score = USER.score
+    #USER.score = 0
+    #USER.save()
     global question_id_list
     question_id_list = []
     
     ctx = {
     'available_question':available_question,
-    'USER': USER,
+    #'USER': USER,
     'category':category,
     'category_count':category_count,
     'question_count':question_count,
