@@ -34,7 +34,6 @@ urlpatterns += [
     url(r'^robots\.txt$', TemplateView.as_view(template_name="quiz/robots.txt", content_type='text/plain')),
 ]
 
-]
 
 urlpatterns += [
     url(r'^google946c8cf2471b95fe.html\.txt$', TemplateView.as_view(template_name="quiz/google946c8cf2471b95fe.html", content_type='text/plain')),
