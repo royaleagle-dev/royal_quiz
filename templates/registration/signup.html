@@ -1,15 +1,48 @@
 {%extends "quiz/base.html"%}
 
 {%block content%}
+<div class = "row">
+    
+    <div class = "col-md-5 offset-md-1 w3-black w3-round-xxlarge w3-container mypad">
+        
+        <form method = "post">
+            <div class = "littleSpaceUp">
+        {%csrf_token%}
+            {{form.as_p}}
+            </div>
+            
+            <input type = "submit" value = "register" class = "btn btn-success littleSpaceDown" style = "float:right;">
+        </form>
+            
+    
+    </div>
+    
+    <div class = "col-md-3 offset-md-1 w3-border-green w3-rightbar w3-container w3-topbar w3-round-xxlarge w3-card-4">
+        <div align = "center">
+        <h2>Instructions</h2>
+            <ol start = "1" class = "text-danger">
+                
+                <li>Always keep your username and password simple for easy remembrance</li>
+            
+                <li>Do not use a password more than 4 characters</li>
+                
+                <li>In case you see an error 404 page after registering, refresh the webpage or go back go home and signup again</li>
+                
+                <li>Once you've signed up do not forget your username and password as you will use this to login into the website</li>
+            
+            </ol>
+            
+        </div>
+    </div>
 
-<div align = "center">
-<form class = "w3-form" method = "post">
-	{%csrf_token%}
-	{{form.as_p}}
-	<input type = "submit" value = "Register" class = "btn btn-info">
-</form>
 </div>
 
 {%endblock%}
 
-{%block title%}Signup{%endblock%}
+{%block style%}
+
+{%endblock%}
+
+{%block title%}
+User-Signup
+{%endblock%}

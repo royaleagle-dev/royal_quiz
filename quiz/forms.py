@@ -8,3 +8,13 @@ class SignupForm(forms.ModelForm):
         fields = '__all__'
         exclude = ['score', 'last_score', 'temp_question_range']
         #exclude score and last_score from signin form
+        widgets = {
+            'firstname': forms.TextInput(attrs={'class': 'form-control'}),
+            'lastname': forms.TextInput(attrs={'class': 'form-control'}),
+            'firstname': forms.TextInput(attrs={'class': 'form-control'}),
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+            'password': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+        
+#MyUser.firstname.widget.attrs.update({'class': 'form-control'})

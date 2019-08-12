@@ -9,6 +9,25 @@ from . forms import SignupForm
 import random
 from django.http import QueryDict
 from django.views.generic import ListView, DetailView
+from django.contrib.auth import authenticate, login
+
+
+def mylogin(request):
+    return render(request, 'quiz/mlogin.html')
+
+def login_processor(request):
+    username = request.POST.get('username')
+    password = request.POST.get('password')
+    current_url = request.POST.get('next')
+    user = authenticate(request, username=username, password=password)
+    
+    if user is not None:
+        login(request, user)
+        return redirect('index')
+    else:
+        messages.warning(request, 'invalid login credentials')
+        return redirect('mylogin')
+    
 
 class CategoryListView(ListView):
     model = Category
@@ -194,6 +213,6 @@ def end_exam(request):
     score = user.score
     user.last_score = score
     user.save()
-    return redirect('index_test')
+    return redirect('index')
     
         
