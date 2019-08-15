@@ -11,6 +11,14 @@ from django.http import QueryDict
 from django.views.generic import ListView, DetailView
 from django.contrib.auth import authenticate, login
 
+@login_required
+def dashboard(request):
+    current_user = request.user
+    current_user = MyUser.objects.get(username = current_user.username)
+    ctx = {
+        'current_user':current_user
+    }
+    return render(request, 'quiz/dashboard.html', ctx)
 
 def mylogin(request):
     return render(request, 'quiz/mlogin.html')
@@ -48,12 +56,6 @@ def index(request):
     question_count = Question.objects.all().count()
     category = Category.objects.all()
     available_question = Question.objects.count()
-    #user = request.user
-    #current_user = User.objects.get(id = user.id)
-    #USER = MyUser.objects.get(username = current_user.username)
-    #user_score = USER.score
-    #USER.score = 0
-    #USER.save()
     global question_id_list
     question_id_list = []
     
@@ -68,11 +70,11 @@ def index(request):
 
 @login_required
 def quiz_param(request, subject):
-    #global question_id_list
-    #question_id_list = [ ]
     current_user = request.user
     user = MyUser.objects.get(username = current_user.username)    
     question_range = int(user.temp_question_range)
+    user.most_recent_quiz = str(subject)
+    user.save()
     ctx = {
         'subject':subject
     }
@@ -105,6 +107,31 @@ def process(request, subject):
     return redirect('quiz_page', subject = subject, pk = random.choice(question_id_list))
 
 
+def postProcessor(request):
+    current_user = request.user
+    user = MyUser.objects.get(username = current_user.username)
+    score = int(user.score)
+    user.score_depo += (str(score)+',')
+    user.save()
+    
+    listOfScores = user.score_depo
+    y = str(listOfScores)
+    x = y.split(sep = ',')
+    temp = [ ]
+    if len(temp) == 0:
+        temp.append(int(0))
+    for item in x:
+        if item != ',':
+            if item != '':
+                temp.append(int(item))
+    
+    
+    user.highest_score = max(temp)
+    user.lowest_score = min(temp)
+    user.save()
+    return redirect('end_exam')
+
+
 
 @login_required
 def quiz_page(request, pk, subject):
@@ -127,7 +154,7 @@ def quiz_page(request, pk, subject):
     
     if num_visits == int(user.temp_question_range):
         del request.session['num_visits']
-        return redirect ('end_exam')
+        return redirect ('postProcessor')
     
     ctx = {
         'question':question,
@@ -138,12 +165,19 @@ def quiz_page(request, pk, subject):
     }
     return render(request, 'quiz/quiz_page.html', ctx)
 
+
+#work not yet done on this view.
 @login_required
 def mark(request, pk, subject):
     user = User()
     
     question = get_object_or_404(Question, pk = pk)
-    selected_choice = question.choice_set.get(pk=request.POST['choice'])
+    
+    try:
+        selected_choice = question.choice_set.get(pk=request.POST['choice'])
+    except(KeyError, Choice.DoesNotExist):
+        messages.warning(request, 'you do not choose any option')
+        return redirect('index')
     
     associated_question = Question.objects.filter(subject__title = subject)
     for items in associated_question:
@@ -207,12 +241,6 @@ def signup(request):
     
 @login_required
 def end_exam(request):
-    user = request.user
-    user = User.objects.get(id = user.id)
-    user = MyUser.objects.get(username = user.username)
-    score = user.score
-    user.last_score = score
-    user.save()
-    return redirect('index')
+    return redirect('dashboard')
     
         

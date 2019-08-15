@@ -8,6 +8,10 @@
     margin-bottom: 20px;
 }
 
+.littleSpaceUp{
+    margin-top: 30px;
+}
+
 .txtWhiteP{
     color:white;
 }
@@ -29,4 +33,9 @@
 
 .mypad{
     padding:15px
+}
+
+.verySmall{
+    font-size = 0.7em;
+    color:darkgray;
 }

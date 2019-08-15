@@ -29,6 +29,8 @@ urlpatterns = [
     path('my_categories/', views.CategoryListView.as_view(), name = 'mycatlist'),
     path('mlogin/', views.mylogin, name = 'mylogin'),
     path('login_processor/', views.login_processor, name = 'login_processor'),
+    path('dashboard/', views.dashboard, name = 'dashboard'),
+    path('postProcessor/', views.postProcessor, name = 'postProcessor')
 ]
 
 urlpatterns += [
