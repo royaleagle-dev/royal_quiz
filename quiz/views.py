@@ -169,6 +169,7 @@ def quiz_page(request, pk, subject):
 #work not yet done on this view.
 @login_required
 def mark(request, pk, subject):
+    global question_id_list
     user = User()
     
     question = get_object_or_404(Question, pk = pk)
@@ -177,11 +178,11 @@ def mark(request, pk, subject):
         selected_choice = question.choice_set.get(pk=request.POST['choice'])
     except(KeyError, Choice.DoesNotExist):
         messages.warning(request, 'you do not choose any option')
-        return redirect('index')
+        return redirect ('quiz_page', pk = random.choice(question_id_list), subject = subject)
     
     associated_question = Question.objects.filter(subject__title = subject)
     for items in associated_question:
-        global question_id_list
+        #global question_id_list
         question_id_list.append(items.id)
         
     next_question = random.choice(question_id_list)
@@ -234,7 +235,7 @@ def signup(request):
             user.last_name = form.cleaned_data['lastname']
             user.save()
             messages.success(request, 'User Created Successfully')
-            return redirect('login')
+            return redirect('mlogin')
     else:
         form = SignupForm()
         return render(request, 'registration/signup.html', {'form':form})
@@ -242,5 +243,3 @@ def signup(request):
 @login_required
 def end_exam(request):
     return redirect('dashboard')
-    
-        

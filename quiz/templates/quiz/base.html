@@ -51,7 +51,6 @@
         				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           				Edit</a>
         				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          					<a class="dropdown-item" href="">Questions</a>
                             <a class="dropdown-item" href="{%url 'dashboard'%}">DashBoard</a>
           					<div class="dropdown-divider"></div>
           						<a class="dropdown-item" href="#">Promotions</a>
@@ -63,6 +62,10 @@
       					<li class="nav-item">
         				<a class="nav-link" href="{%url 'mylogin'%}">Login</a>
       					</li>
+                        <li class="nav-item">
+        				<a class="nav-link" href="{%url 'logout'%}">Logout</a>
+      					</li>
+                        
                 <li class="nav-item">
                 <a class="nav-link" href="{%url 'signup'%}">Signup</a>
                 </li>
@@ -73,12 +76,17 @@
                 <li class="nav-item">
                 <a class="nav-link btn btn-success w3-focus" href="#">{{user.username}}</a>
                 </li>
+                        
+                <li class="nav-item">
+                <a class="nav-link btn btn-success w3-focus" href="#">RQ = </a>
+                </li>
+                        
                 {%endif%}
     				</ul>
-    				<form class="form-inline my-2 my-lg-0" action = "">
+    				<!--<form class="form-inline my-2 my-lg-0" action = "">
       					<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id = "search" name = "search">
       					<button class="btn btn-outline-success my-2 my-sm-0" type="submit"  >Search</button>
-    				</form>
+    				</form>-->
   				</div>
 			</nav>
 		</div>
@@ -97,15 +105,15 @@
                             {%block info%}
 
 
-                            <div class = "w3-panel w3-black w3-text-light" style = "height:30px; margin-top:60px;">
+                            <!--<div class = "w3-panel w3-black w3-text-light" style = "height:30px; margin-top:60px;">
                                 <p>User: {%if user.is_authenticated%} <span class = "text-warning">{{user.username}}</span>{%endif%}      LastScore: {%if user.is_authenticated%} <span class = "text-warning">{{USER.last_score}}</span>{%endif%}</p>
-                            </div>
+                            </div>-->
 
                             {%endblock%}
                         </div>
 
 
-                    <div>
+                    <div style = "margin-top: 70px">
                         {%block content%}
                         {%endblock%}
                     </div>
