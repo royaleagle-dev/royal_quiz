@@ -10,6 +10,7 @@ import random
 from django.http import QueryDict
 from django.views.generic import ListView, DetailView
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import Group
 
 @login_required
 def dashboard(request):
@@ -233,9 +234,14 @@ def signup(request):
             user = User.objects.create_user(username, email, password)
             user.first_name = form.cleaned_data['firstname']
             user.last_name = form.cleaned_data['lastname']
+            
+            #add user to a normal user group for the first time
+            group = Group.objects.get(name = 'Normal Users')
+            user.groups.add(group)
+            
             user.save()
             messages.success(request, 'User Created Successfully')
-            return redirect('mlogin')
+            return redirect('mylogin')
     else:
         form = SignupForm()
         return render(request, 'registration/signup.html', {'form':form})

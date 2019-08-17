@@ -56,6 +56,7 @@ class MyUser(models.Model):
     most_recent_quiz = models.CharField(max_length = 200, default = '')
     date_done = models.DateTimeField(auto_now = True)
     score_depo = models.CharField(max_length = 10000)
+    #RP = models.IntegerField(default = 0)
     
     def __str__(self):
         return self.username

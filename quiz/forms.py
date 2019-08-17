@@ -6,7 +6,7 @@ class SignupForm(forms.ModelForm):
     class Meta:
         model = MyUser
         fields = '__all__'
-        exclude = ['score', 'last_score', 'temp_question_range','highest_score','lowest_score', 'score_depo', 'most_recent_quiz']
+        exclude = ['score', 'last_score', 'temp_question_range','highest_score','lowest_score', 'score_depo', 'most_recent_quiz',]
         #exclude score and last_score from signin form
         widgets = {
             'firstname': forms.TextInput(attrs={'class': 'form-control'}),
