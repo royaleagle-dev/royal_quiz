@@ -39,24 +39,4 @@ class Choice(models.Model):
     pub_date = models.DateTimeField(auto_now = True)
     
     def __str__(self):
-        return self.choice
-
-import datetime
-class MyUser(models.Model):
-    firstname = models.CharField(max_length = 200)
-    lastname = models.CharField(max_length = 200)
-    username = models.CharField(max_length = 200)
-    password = models.CharField(max_length = 200)
-    email = models.EmailField(max_length = 200)
-    added = models.DateTimeField(auto_now_add = True)
-    score = models.IntegerField(default = 0)
-    highest_score = models.CharField(max_length = 200)
-    lowest_score = models.CharField(max_length = 200)
-    temp_question_range = models.IntegerField(default = 0)
-    most_recent_quiz = models.CharField(max_length = 200, default = '')
-    date_done = models.DateTimeField(auto_now = True)
-    score_depo = models.CharField(max_length = 10000)
-    #RP = models.IntegerField(default = 0)
-    
-    def __str__(self):
-        return self.username
+        return self.choice  

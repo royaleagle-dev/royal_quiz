@@ -17,4 +17,3 @@ class SignupForm(forms.ModelForm):
             'email': forms.TextInput(attrs={'class': 'form-control'}),
         }
         
-#MyUser.firstname.widget.attrs.update({'class': 'form-control'})

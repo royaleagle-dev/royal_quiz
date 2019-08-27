@@ -26,6 +26,9 @@
     
             {%block style%}
             {%endblock%}
+        
+        {%block headadd%}
+        {%endblock%}
 
     </head>
     
@@ -51,7 +54,7 @@
         				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           				Edit</a>
         				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{%url 'dashboard'%}">DashBoard</a>
+                            <a class="dropdown-item" href="{%url 'users:dashboard'%}">DashBoard</a>
           					<div class="dropdown-divider"></div>
           						<a class="dropdown-item" href="#">Promotions</a>
         					</div>
@@ -60,14 +63,14 @@
         				<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
       					</li>-->
       					<li class="nav-item">
-        				<a class="nav-link" href="{%url 'mylogin'%}">Login</a>
+        				<a class="nav-link" href="{%url 'users:coreLogin'%}">Login</a>
       					</li>
                         <li class="nav-item">
         				<a class="nav-link" href="{%url 'logout'%}">Logout</a>
       					</li>
                         
                 <li class="nav-item">
-                <a class="nav-link" href="{%url 'signup'%}">Signup</a>
+                <a class="nav-link" href="{%url 'users:signup'%}">Signup</a>
                 </li>
       					<li class="nav-item">
         				<a class="nav-link" href="{%url 'contact'%}">Contact</a>
@@ -75,10 +78,6 @@
                 {%if user.is_authenticated%}
                 <li class="nav-item">
                 <a class="nav-link btn btn-success w3-focus" href="#">{{user.username}}</a>
-                </li>
-                        
-                <li class="nav-item">
-                <a class="nav-link btn btn-dark w3-focus" href="#">RP = </a>
                 </li>
                         
                 {%endif%}
@@ -115,6 +114,8 @@
 
                     <div style = "margin-top: 70px">
                         {%block content%}
+                        
+                        
                         {%endblock%}
                     </div>
 

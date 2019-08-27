@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'quiz'
+    'quiz',
+    'users'
 ]
 
 MIDDLEWARE = [
@@ -131,7 +132,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL = '/quiz/'
-LOGIN_URL = '/mlogin/'
+LOGIN_URL = '/user_auth/corelogin/'
 
 # Heroku: Update database configuration from $DATABASE_URL.
 import dj_database_url

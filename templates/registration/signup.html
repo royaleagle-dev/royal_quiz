@@ -1,14 +1,37 @@
 {%extends "quiz/base.html"%}
 
 {%block content%}
+
+<div>
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <p{% if message.tags == 'success' %} class="text-success"{%elif message.tags == 'warning'%} class = "text-warning bg-secondary"{%else%} class = "text-info" {%endif%}>{{ message }}</p>
+    {% endfor %}
+</ul>
+{% endif %}
+</div>
+
+
 <div class = "row">
     
     <div class = "col-md-5 offset-md-1 w3-black w3-round-xxlarge w3-container mypad">
         
-        <form method = "post">
+        <form method = "post" action = "{%url 'users:signup_processor'%}">
+            {%csrf_token%}
+            
             <div class = "littleSpaceUp">
-        {%csrf_token%}
-            {{form.as_p}}
+            
+                <input type = "text" placeholder = "firstname" name = "firstname" id = "firstname" class = "form-control"><br>
+                
+                <input type = "text" placeholder = "lastname" name = "lastname" id = "lastname" class = "form-control"><br>
+                
+                <input type = "text" placeholder = "username" name = "username" id = "username" class = "form-control"><br>
+                
+                <input type = "password" placeholder = "password" name = "password" id = "password" class = "form-control"><br>
+                
+                <input type = "email" placeholder = "email" name = "email" id = "email" class = "form-control"><br>
+        
             </div>
             
             <input type = "submit" value = "register" class = "btn btn-success littleSpaceDown" style = "float:right;">

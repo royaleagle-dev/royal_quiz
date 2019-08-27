@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from quiz.models import Question, Choice, MyUser, Category, Subject
+from quiz.models import Question, Choice, Category, Subject
 
 class ChoiceAdmin(admin.ModelAdmin):
     list_display = ['question', 'choice', 'flag']
@@ -28,6 +28,5 @@ class QuestionAdmin(admin.ModelAdmin):
     
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Choice, ChoiceAdmin)
-admin.site.register(MyUser)
 admin.site.register(Category)
 admin.site.register(Subject)
