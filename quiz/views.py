@@ -144,9 +144,9 @@ def quiz_page(request, pk, subject):
     
     if num_visits == int(user.profile.temp_question_range):
         user = request.user
-        user.profile.total_question_answered += num_visits
+        user.profile.total_question_answered += user.profile.temp_question_range
         user.save()
-        user.profile.RP += (user.profile.total_question_answered/5)
+        user.profile.RP += (user.profile.temp_question_range/5)
         user.save()
         del request.session['num_visits']
         return redirect ('postProcessor')
@@ -215,4 +215,4 @@ def mark(request, pk, subject):
     
 @login_required
 def end_exam(request):
-    return redirect('users:dashboard')
+    return redirect('users:dashboardQuiz')

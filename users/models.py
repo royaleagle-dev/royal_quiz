@@ -45,3 +45,13 @@ class Profile(models.Model):
         instance.profile.save()
     
 
+
+class Notification (models.Model):
+    message = models.TextField(max_length = 10000)
+    sender = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'sender')
+    receiver = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'receiver')
+    sent_on = models.DateTimeField(auto_now = True)
+    read = models.BooleanField(default = False)
+    
+    def __str__ (self):
+        return self.user

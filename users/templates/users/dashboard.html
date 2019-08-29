@@ -10,7 +10,8 @@
 
 {%block info%}
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" style = "margin-top:50px;">
-    <h1 class="h2">Dashboard</h1>
+        <h1 class="h2"><a href = "{%url 'users:dashboard'%}">Dashboard</a></h1>
+        <a class = "btn btn-outline-primary" href = ""><span>+</span>Add Question</a>
         <div class="btn-toolbar mb-2 mb-md-0">
             <div class="btn-group mr-2">
                 <button class="btn btn-sm btn-outline-secondary">RP</button>
@@ -25,7 +26,7 @@
 {%block content%}
 <div class = "row">
 
-    <div class = "col-md-8 offset-md-2 w3-card-4 w3-white w3-border-green w3-leftbar w3-hover-light-grey">
+    <div class = "col-md-8 offset-md-2 w3-card-4 w3-white w3-border-green w3-leftbar">
         
         <div class = "row">
         
@@ -35,7 +36,7 @@
                 </a>
             </div>
             
-            <div class = "col-md-2 offset-md-1" align = "center"><a href = "">
+            <div class = "col-md-2 offset-md-1" align = "center"><a href = "{%url 'users:dashboardQuiz'%}">
                 <h3 class = "text-center text-info">Quiz</h3>
                 <span class = "fa fa-book text-success" style = "font-size:60px;border-bottom:30px;"></span>
                 </a>
@@ -58,6 +59,7 @@
         <hr class = "w3-border-green w3-bottombar">
     
     </div>
+    
 
 </div>
                  
