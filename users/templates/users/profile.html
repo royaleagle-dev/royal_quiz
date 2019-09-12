@@ -1,0 +1,145 @@
+{%extends "quiz/base.html"%}
+
+
+{%block info%}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" style = "margin-top:50px;">
+        <h1 class="h2"><a href = "{%url 'users:dashboard'%}">Dashboard</a></h1>
+        <a class = "btn btn-outline-primary" href = ""><span>+</span>Add Question</a>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
+                <button class="btn btn-sm btn-outline-secondary">RP</button>
+                <button class="btn btn-sm btn-outline-secondary">{{user.profile.RP}}</button>
+                <span class = "btn btn-outline-danger">{{user.profile.get_status_display}}</span>
+              </div>
+            </div>
+          </div>
+{%endblock%}
+
+<div>
+{% if messages %}
+    {% for message in messages %}
+    <p{% if message.tags == 'success' %} class="text-success"{%elif message.tags == 'warning'%} class = "text-warning bg-secondary"{%else%} class = "text-info" {%endif%}>{{ message }}</p>
+    {% endfor %}
+{% endif %}
+</div>
+
+
+{%block content%}
+<div class = "row">
+    <div class = "col">
+        <h1 class = "text-danger text-center">{{user.profile.firstname}} {{user.profile.lastname}}</h1>
+        <hr>
+        <div class = "row">
+            <div class = "col-md-8">
+                <h1 class = "w3-text-green">Change Details</h1>
+                <form class = "form" method = "post" action = "{%url 'users:profileUpdate' user.username%}">
+                    {%csrf_token%}
+                    <div class = "row">
+                        
+                        <div class = "col-md-6">
+                            <label>Firstname</label>
+                            <input type = "text" disabled name = "firstname" value = "{{user.profile.firstname}}" class = "form-control" id = "firstname"><br>
+                            
+                            <label>Username</label>
+                            <input type = "text" disabled name = "username" value = "{{user.username}}" class = "form-control" id = "username"><br>
+                            
+                            <label>Password</label>
+                            <input type = "password" disabled name = "password" value = "{{user.password}}" class = "form-control" id = "password"><br>
+                        </div> 
+                        
+                        <div class = "col-md-6">
+                            <label>Lastname</label>
+                            <input type = "text" disabled name = "lastname" value = "{{user.profile.lastname}}" class = "form-control" id = "lastname"><br>
+                            
+                            <label>Email</label>
+                            <input type = "email" disabled name = "email" value = "{{user.email}}" class = "form-control" id = "email"><br>
+                        
+                            <input type = "submit" class = "btn btn-success" value = "Update" style = "float:right">
+                            <button type = "button" class = "btn btn-danger" style = "float:right" id = "visible">Change</button>
+                        </div>
+                    </div>
+                </form>
+                
+                <hr>
+                
+                <div>
+                    <h2 class = "w3-text-green">Add a Question</h2>
+                    <form method = "post" action = "{%url 'users:addQuestion'%}">
+                        {%csrf_token%}
+                        <label for = "question">Question</label>
+                        <input type = "text" class = "form-control" maxlength = "255" name = "question">
+                        <hr>
+                        <div class = "row">
+                            <div class = "col-md-3">
+                                <input class = "form-control" type = "text" placeholder = "option 1" name = "option1" maxlength = "255">
+                            </div>
+                            
+                            <div class = "col-md-3">
+                                <input class = "form-control" type = "text" placeholder = "option 3" name = "option2" maxlength = "255">
+                            </div>
+                            
+                            <div class = "col-md-3">
+                                <input class = "form-control" type = "text" placeholder = "option 2" name = "option3" maxlength = "255">
+                            </div>
+                            
+                            <div class = "col-md-3">
+                                <input class = "form-control" type = "text" placeholder = "option 4" name = "option4" maxlength = "255">
+                            </div>
+                        </div>
+                        <hr>
+                        
+                        <input type = "submit" class = "btn btn-info" style = "float:right" value = "Add Question">
+                    
+                    </form>
+                </div>
+                
+            </div>
+            
+            <div class = "col-md-4">
+                <h3>Full Name</h3>
+                <p class = "w3-text-green">{{user.profile.firstname}} {{user.profile.lastname}}</p>
+                <hr>
+                <h3>Account Type</h3>
+                <p class = "w3-text-green">{{user.profile.get_status_display}}</p>
+                <hr>
+                
+                 <h3>Last Login</h3>
+                <p class = "w3-text-green">{{user.last_login}}</p>
+                <hr>
+                
+                <h3>Date Registered</h3>
+                <p class = "w3-text-green">{{user.date_joined}}</p>
+                <hr>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    //initializing and declaring needed variables
+    let firstname = document.querySelector('#firstname');
+    let lastname = document.querySelector('#lastname');
+    let username = document.querySelector('#username');
+    let email = document.querySelector('#email');
+    let password = document.querySelector('#password');
+    const visible = document.querySelector('#visible');
+    //console.log(visible);
+    
+    //function to enable all form fields
+    function visibility(){
+        firstname.disabled = false;
+        lastname.disabled = false;
+        username.disabled = false;
+        email.disabled = false;
+        password.disabled = false;
+        firstname.focus();
+    }
+    
+    visible.addEventListener('click', visibility)
+</script>
+{%endblock%}
+
+
+
+{%block title%}{{user.username}}{%endblock%}

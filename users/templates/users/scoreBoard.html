@@ -26,9 +26,11 @@
 {%block content%}
 <div class = "row">
 
-    <div class = "col-md-12 w3-card-4 w3-white w3-border-green w3-leftbar">
+    <div class = "col-md-12 w3-white w3-border-green w3-leftbar">
         
-        <table class = "table table-striped">
+        <h1 class = "w3-text-green w3-center">Top Users</h1>
+        
+        <table class = "table">
             
             <tr>                
                 <td><b>Username</b></td>
@@ -38,13 +40,8 @@
             {%for items in users%}
             
             <tr>
-                
-                
                 <td class = "w3-text-black">{{items.username}}</td>
                 <td><button class = "btn btn-outline-danger">{{items.profile.RP}}RP</button></td>
-                <!--<td><button class = "btn btn-outline-success">{{items.profile.get_status_display}}</button></td>-->
-                <td><a href = "{%url 'users:profileMini' items.username%}" class = "btn btn-success">View</a></td>
-            
             </tr>
             {%endfor%}
         

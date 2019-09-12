@@ -23,11 +23,9 @@ class Profile(models.Model):
     mystatus = (
         ('bu', 'basic user'),
         ('au', 'advanced user'),
-        ('mu', 'master user')
     )
     
-    status = models.CharField(max_length = 3, choices = mystatus, blank = True, default = 'bu')
-    
+    status = models.CharField(max_length = 3, choices = mystatus, blank = True, default = 'bu')    
     
     def __str__(self):
         fName = self.firstname
@@ -43,15 +41,23 @@ class Profile(models.Model):
     @receiver(post_save, sender = User)
     def save_user_profile(sender, instance, **kwargs):
         instance.profile.save()
+        
     
-
-
-class Notification (models.Model):
-    message = models.TextField(max_length = 10000)
-    sender = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'sender')
-    receiver = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'receiver')
-    sent_on = models.DateTimeField(auto_now = True)
-    read = models.BooleanField(default = False)
-    
+class PendingQuestion(models.Model):
+    question = models.CharField(max_length = 255)
+    option1 = models.CharField(max_length = 255)
+    option2 = models.CharField(max_length = 255)
+    option3 = models.CharField(max_length = 255)
+    option4 = models.CharField(max_length = 255)
+    is_approved = models.BooleanField(default = False)
+    sender = models.CharField(max_length = 255, editable = False)
+        
+    def approved(self):
+        if self.is_approved == True:
+            return True
+        else:
+            return False
+        
     def __str__ (self):
-        return self.user
+        return self.question
+        

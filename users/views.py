@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.db import IntegrityError
 from django.contrib.auth import authenticate, login as auth_login
-from users.models import Profile
+from users.models import Profile, PendingQuestion
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -12,6 +12,43 @@ from django.core.paginator import Paginator
 
 
 # Create your views here.
+@login_required
+def addQuestion(request):
+    if request.method == 'POST':
+        question = request.POST.get('question')
+        option1 = request.POST.get('option1')
+        option2 = request.POST.get('option2')
+        option3 = request.POST.get('option3')
+        option4 = request.POST.get('option4')
+        
+        PendingQuestion.objects.create(question = question, option1 = option1, option2 = option2, option3 = option3, option4 = option4, sender = request.user.username, is_approved = False )
+        
+        messages.success (request, 'Question successfully submitted, and is under processing. The question will be added to the database after processing is complete')
+        
+        return redirect('users:profile', username = request.user.username)
+    else:
+        messages.error (reqeust, "you are not permitted be view this page")
+        return redirect ('index')
+
+def profileUpdate(request, username):
+    user = User.objects.get(username = username)
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        email = request.POST['email']
+        firstname = request.POST['firstname']
+        lastname = request.POST['lastname']
+        
+        user.username = username
+        user.password = password
+        user.email = email
+        user.save()
+        
+        user.profile.firstname = firstname
+        user.profile.lastname = lastname
+        user.save()
+        return redirect('users:profile', username = username)
+        
 
 def profile(request, username):
     user = User.objects.get(username = username)
@@ -19,6 +56,13 @@ def profile(request, username):
         'user':user
     }
     return render(request, 'users/profile.html', ctx)
+
+def profileMini(request, username):
+    user = User.objects.get(username = username)
+    ctx = {
+        'user':user
+    }
+    return render(request, 'users/profileMini.html', ctx)
 
 def signup(request):
     return render(request, 'registration/signup.html')
@@ -66,6 +110,12 @@ class dashboardUsers(LoginRequiredMixin, ListView):
     template_name = 'users/dashboardUsers.html'
     queryset = User.objects.all().order_by('-profile__RP')
     paginate_by = 12
+
+class scoreBoard(LoginRequiredMixin, ListView):
+    model = User
+    context_object_name = 'users'
+    template_name = 'users/scoreBoard.html'
+    queryset = User.objects.all().order_by('-profile__RP')[:5]
 
 
 @login_required

@@ -11,5 +11,9 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name = 'dashboard'),
     path('dashboard/users/', views.dashboardUsers.as_view(), name = 'dashboardUsers'),
     path('dashboard/quiz/', views.dashboardQuiz, name = 'dashboardQuiz'),
-    path('dashboard/profile/<str:username>/', views.profile, name = 'profile')
+    path('dashboard/profile/<str:username>/', views.profile, name = 'profile'),
+    path('dashboard/profile/<str:username>/update/', views.profileUpdate, name = 'profileUpdate'),
+    path('dashboard/profileM/<str:username>/', views.profileMini, name = 'profileMini'),
+    path('dashboard/scoreBoard/', views.scoreBoard.as_view(), name = 'scoreBoard'),
+    path('dashboard/addQuestion/', views.addQuestion, name = 'addQuestion'),
 ]
