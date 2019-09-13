@@ -21,7 +21,9 @@ def addQuestion(request):
         option3 = request.POST.get('option3')
         option4 = request.POST.get('option4')
         
-        PendingQuestion.objects.create(question = question, option1 = option1, option2 = option2, option3 = option3, option4 = option4, sender = request.user.username, is_approved = False )
+        question = PendingQuestion(question = question, option1 = option1, option2 = option2, option3 = option3, option4 = option4, sender = request.user.username, is_approved = False )
+        
+        question.save()
         
         messages.success (request, 'Question successfully submitted, and is under processing. The question will be added to the database after processing is complete')
         
