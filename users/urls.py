@@ -16,4 +16,5 @@ urlpatterns = [
     path('dashboard/profileM/<str:username>/', views.profileMini, name = 'profileMini'),
     path('dashboard/scoreBoard/', views.scoreBoard.as_view(), name = 'scoreBoard'),
     path('dashboard/addQuestion/', views.addQuestion, name = 'addQuestion'),
+    path('dashboard/approveQuestion/', views.approveQuestion, name = 'approveQuestion'),
 ]

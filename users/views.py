@@ -13,6 +13,22 @@ from django.core.paginator import Paginator
 
 # Create your views here.
 @login_required
+def approveQuestion(request):
+    user = request.user
+    if user.profile.status == 'au':
+        question = PendingQuestion.objects.filter(is_approved__exact = False)
+        question_count = PendingQuestion.objects.filter(is_approved__exact = False).count()
+        ctx = {
+            'question':question,
+            'question_count':question_count
+        }
+        return render(request, 'users/approveQuestion.html', ctx)
+    else:
+        messages.error (request, 'sorry you do not have the permission to view this page')
+        return redirect ('index')
+
+
+@login_required
 def addQuestion(request):
     if request.method == 'POST':
         question = request.POST.get('question')

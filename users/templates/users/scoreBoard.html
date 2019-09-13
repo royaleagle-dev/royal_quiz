@@ -11,7 +11,7 @@
 {%block info%}
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" style = "margin-top:50px;">
     <h1 class="h2"><a href = "{%url 'users:dashboard'%}">Dashboard</a></h1>
-        <a class = "btn btn-outline-primary" href = ""><span>+</span>Add Question</a>
+        {%if user.profile.status == 'au'%}<a class = "btn btn-outline-primary" href = "{%url 'users:approveQuestion'%}">Pending Questions</a>{%endif%}
         <div class="btn-toolbar mb-2 mb-md-0">
             <div class="btn-group mr-2">
                 <button class="btn btn-sm btn-outline-secondary">RP</button>
