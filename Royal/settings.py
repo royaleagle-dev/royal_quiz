@@ -35,7 +35,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'cg#p$g+j9tax!#a3cup@1$8obt2_+&
 #DEBUG = True
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
-ALLOWED_HOSTS = ['192.168.43.91', 'localhost', 'boiling-harbor-39472.herokuapp.com', 'royaleagle.herokuapp.com', 'royalquiz.herokuapp.com']
+ALLOWED_HOSTS = ['192.168.43.91', 'localhost', 'boiling-harbor-39472.herokuapp.com', 'royaleagle.herokuapp.com',]
 
 
 # Application definition
@@ -155,3 +155,8 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'royaleagle.dev@gmail.com'
+EMAIL_HOST_PASSWORD = '09054719111'
