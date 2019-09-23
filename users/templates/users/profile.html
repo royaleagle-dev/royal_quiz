@@ -70,6 +70,17 @@
                         <input type = "text" class = "form-control" maxlength = "255" name = "question">
                         <hr>
                         <div class = "row">
+                            <div class = "col-md-6">
+                                    <input class = "form-control" type = "text" placeholder = "category" name = "category" maxlength = "255">
+                            </div>
+                            
+                            <div class = "col-md-6">
+                                    <input class = "form-control" type = "text" placeholder = "subject" name = "subject" maxlength = "255">
+                            </div>
+                        </div>
+                        <hr>
+                        
+                        <div class = "row">
                             <div class = "col-md-3">
                                 <input class = "form-control" type = "text" placeholder = "option 1" name = "option1" maxlength = "255">
                             </div>
@@ -88,7 +99,10 @@
                         </div>
                         <hr>
                         
-                        <input type = "submit" class = "btn btn-info" style = "float:right" value = "Add Question">
+                        <label for = "question">Answer</label>
+                        <input type = "text" class = "form-control" maxlength = "255" name = "answer" placeholder = " the answer provided here must be in the options above"><br>
+                        
+                        <input type = "submit" class = "btn btn-info btn-block" value = "Add Question" id = 'add'>
                     
                     </form>
                 </div>
@@ -137,6 +151,14 @@
     }
     
     visible.addEventListener('click', visibility)
+</script>
+
+<script>
+    const btn = document.querySelector('#add');
+    function message(){
+        alert('you have successfully added the question to the database');
+    }
+    btn.addEventListener('click', message)
 </script>
 {%endblock%}
 

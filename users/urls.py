@@ -17,4 +17,5 @@ urlpatterns = [
     path('dashboard/scoreBoard/', views.scoreBoard.as_view(), name = 'scoreBoard'),
     path('dashboard/addQuestion/', views.addQuestion, name = 'addQuestion'),
     path('dashboard/approveQuestion/', views.approveQuestion, name = 'approveQuestion'),
+    path('dashboard/decline/<str:pk>/', views.decline, name = 'decline'),
 ]

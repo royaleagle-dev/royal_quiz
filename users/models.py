@@ -51,6 +51,9 @@ class PendingQuestion(models.Model):
     option4 = models.CharField(max_length = 255)
     is_approved = models.BooleanField(default = False)
     sender = models.CharField(max_length = 255, editable = False)
+    category = models.CharField(max_length = 255)
+    subject = models.CharField(max_length = 255)
+    answer = models.CharField(max_length = 255)
         
     def approved(self):
         if self.is_approved == True:

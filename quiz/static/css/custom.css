@@ -40,3 +40,10 @@
     color:darkgray;
 }
 
+td a {
+    color:white;
+}
+
+td a:hover{
+        color:azure;
+    }

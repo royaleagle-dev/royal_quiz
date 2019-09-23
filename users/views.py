@@ -12,11 +12,18 @@ from django.core.paginator import Paginator
 
 
 # Create your views here.
+def decline(request, pk):
+    pQuestion = PendingQuestion.objects.get(pk=pk)
+    pQuestion.delete()
+    messages.success (request, 'Question successfully deleted from database.')
+    return redirect('users:approveQuestion')
+
+
 @login_required
 def approveQuestion(request):
     user = request.user
     if user.profile.status == 'au':
-        question = PendingQuestion.objects.filter(is_approved__exact = False)
+        question = PendingQuestion.objects.filter(is_approved__exact = False).order_by('-id')
         question_count = PendingQuestion.objects.filter(is_approved__exact = False).count()
         ctx = {
             'question':question,
@@ -36,8 +43,11 @@ def addQuestion(request):
         option2 = request.POST.get('option2')
         option3 = request.POST.get('option3')
         option4 = request.POST.get('option4')
+        subject = request.POST.get('subject')
+        category = request.POST.get('category')
+        answer = request.POST.get('answer')
         
-        question = PendingQuestion(question = question, option1 = option1, option2 = option2, option3 = option3, option4 = option4, sender = request.user.username, is_approved = False )
+        question = PendingQuestion(question = question, option1 = option1, option2 = option2, option3 = option3, option4 = option4, sender = request.user.username, is_approved = False, category = category, subject = subject, answer = answer )
         
         question.save()
         
@@ -89,10 +99,6 @@ def signup_processor(request):
     username = request.POST['username']
     password = request.POST['password']
     email = request.POST['email']
-    
-    if len(email) == 0:
-        messages.warning(request, 'pls input a valid email')
-        return redirect('users:signup')
     
     try:
         user = User.objects.create_user(username, email, password)
@@ -151,21 +157,6 @@ def coreLoginProcessor(request):
             username = request.POST['username']
             password = request.POST['password']
         
-            if len(username)== 0:
-                messages.error(request, "please fill all the fields")
-                return redirect ('users:coreLogin')
-
-            elif len(username)== 0:
-                messages.error(request, "please fill all the fields")
-                return redirect ('users:coreLogin')
-        
-            elif len(username) != 0 and len(password) == 0:
-                messages.error(request, "pls fill in the password field")
-                return redirect('users:coreLogin')
-            elif len(password) !=0 and len(username) == 0:
-                messages.error(request, "pls fill in the username field")
-                return redirect ('users:coreLogin')
-        
         except IntegrityError:
             messages.error(request, 'pls fill in the correct credentials')
             return redirect('users:coreLogin')
@@ -173,11 +164,12 @@ def coreLoginProcessor(request):
         try:
             user = authenticate(username=username, password=password)
             profile = Profile.objects.get_or_create(user = user)
+            
     
             if user is not None:
                 if user.is_active:
                     auth_login(request, user)
-                    return redirect('index')
+                    return redirect('mycatlist')
                 else:
                     messages.warning(request, 'your account has been disabled temporarily, pls contact the admin')
             else:

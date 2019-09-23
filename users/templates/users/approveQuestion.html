@@ -14,58 +14,33 @@
           </div>
 {%endblock%}
 
+<div>
+{% if messages %}
+    {% for message in messages %}
+    <p{% if message.tags == 'success' %} class="text-success"{%elif message.tags == 'warning'%} class = "text-warning bg-secondary"{%else%} class = "text-info" {%endif%}>{{ message }}</p>
+    {% endfor %}
+{% endif %}
+</div>
+
 {%block content%}
-<div class ="row w3-panel w3-yellow w3-container">
-    <div class = "col-md-3">
-        <h3 class = "w3-text-red">Question</h3>
-    </div>
-    
-    <div class = "col-md-2">
-        <h3>Option1</h3>
-    </div>
-    
-    <div class = "col-md-2">
-        <h3>Option2</h3>
-    </div>
-    
-    <div class = "col-md-2">
-        <h3>Option3</h3>
-    </div>
-    
-    <div class = "col-md-2">
-        <h3>Option4</h3>
-    </div>
-</div>
-<hr>
+    {%for item in question%}
+        <div class = "w3-panel w3-pale-yellow">
+            <h3>{{item.question}}</h3>
+            <p>Category <button class = "btn btn-danger">{{item.category}}</button> | Subject <button class = "btn btn-danger">{{item.subject}}</button></p>
+            
+            <p>A: {{item.option1}} |  B: {{item.option2}} |  C: {{item.option3}} |  D: {{item.option4}} | Answer: {{item.answer}} </p>
+        </div>
+        
+        <a href = ""class = "btn btn-outline-success">Approve</a> <a href = "{%url 'users:decline' item.id%}" id = 'delete' class = "btn btn-outline-danger">Decline</a>
 
+    {%endfor%}
 
-{%for item in question%}
-<div class ="row">
-    <div class = "col-md-3">
-        <p class = "w3-text-red">{{item.question}}</p>
-    </div>
-    
-    <div class = "col-md-2">
-        {{item.option1}}
-    </div>
-    
-    <div class = "col-md-2">
-        {{item.option2}}
-    </div>
-    
-    <div class = "col-md-2">
-        {{item.option3}}
-    </div>
-    
-    <div class = "col-md-2">
-        {{item.option4}}
-    </div>
-    
-    <div class = "col-md-1">
-    <a href = "">Approve</a> | <a href = "">Reject</a>
-    </div>
-</div>
-<hr>
-{%endfor%}
+<script>
+    const del = document.querySelector('#delete');
+    function message(){
+        alert('you have successfully deleted this message from the database')
+    }
+    del.addEventListener('click', message);
+</script>
 
 {%endblock%}

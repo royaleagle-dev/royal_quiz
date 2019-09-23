@@ -16,14 +16,12 @@
     <div class = "col-md-4 offset-md-2 w3-black w3-container w3-round-xxlarge littleSpaceUp mypad">
         <form method = "post" action = "{%url 'users:coreLoginProcessor'%}" class = "">
             {%csrf_token%}
-            Username: <input type = "text" class = "form-control" name = "username">
-            Password: <input type = "password" class = "form-control" name = "password" length = "4">
+            Username: <input type = "text" class = "form-control" name = "username" required>
+            Password: <input type = "password" class = "form-control" name = "password" maxlength = "4" required>
             
             <br>
             <input type = "submit" class = "btn btn-success littleSpaceDown" value = "Login" style = "float:right">
-            
-            
-            <input type="hidden" name="next" value="{{ next }}">
+            <input type="hidden" name="next" value="{{ next }}" />
         </form>
     
     </div>
