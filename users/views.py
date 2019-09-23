@@ -9,9 +9,25 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
+from django.core.mail import EmailMessage
 
 
 # Create your views here.
+
+def approve(request, pk):
+    pQuestion = PendingQuestion.objects.get(pk = pk)
+    subject = 'New Question'
+    content = "Question: {0},\n Options: {1}, {2}, {3}, {4} \n Answer: {5}".format(pQuestion.question, pQuestion.option1, pQuestion.option2, pQuestion.option3, pQuestion.option4, pQuestion.answer)
+    to = ['royaleagle.dev@gmail.com',]
+    from_email = request.user.email
+    
+    msg = EmailMessage(subject, content,from_email, to)
+    msg.send()
+    pQuestion.delete()
+    return redirect('users:approveQuestion')
+    
+    
+
 def decline(request, pk):
     pQuestion = PendingQuestion.objects.get(pk=pk)
     pQuestion.delete()

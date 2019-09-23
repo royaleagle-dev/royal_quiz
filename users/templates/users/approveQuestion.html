@@ -31,7 +31,7 @@
             <p>A: {{item.option1}} |  B: {{item.option2}} |  C: {{item.option3}} |  D: {{item.option4}} | Answer: {{item.answer}} </p>
         </div>
         
-        <a href = ""class = "btn btn-outline-success">Approve</a> <a href = "{%url 'users:decline' item.id%}" id = 'delete' class = "btn btn-outline-danger">Decline</a>
+        <a href = "{%url 'users:approve' item.id%}" class = "btn btn-outline-success">Approve</a> <a href = "{%url 'users:decline' item.id%}" id = 'delete' class = "btn btn-outline-danger">Decline</a>
 
     {%endfor%}
 
