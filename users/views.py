@@ -18,8 +18,8 @@ def approve(request, pk):
     pQuestion = PendingQuestion.objects.get(pk = pk)
     subject = 'New Question'
     content = "Question: {0},\n Options: {1}, {2}, {3}, {4} \n Answer: {5}".format(pQuestion.question, pQuestion.option1, pQuestion.option2, pQuestion.option3, pQuestion.option4, pQuestion.answer)
-    to = ['royaleagle.dev@gmail.com',]
-    from_email = request.user.email
+    to = ['ayotundeokunubi73@gmail.com']
+    from_email = 'royaleagle.dev@gmail.com'
     
     msg = EmailMessage(subject, content,from_email, to)
     msg.send()

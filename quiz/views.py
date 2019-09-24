@@ -25,11 +25,11 @@ def contact(request):
     if request.method == 'POST':
         subject = request.POST['subject']
         message = request.POST['message']
-        from_mail = request.POST['email']
+        from_mail = 'royaleagle.dev@gmail.com'
         if subject and message and from_mail:
             if len(subject) != 0 and len(message) !=0 and len(from_mail) !=0:
                 try:
-                    send_mail(subject, message, from_email, ['royaleagle.dev@gmail.com'])
+                    send_mail(subject, message, from_email, ['ayotundeokunubi73@gmail.com'])
                 except BadHeaderError:
                     return HttpResponse ('Something went wrong pls try again')
                 messages.success (request, 'suggestion successfully sent')
