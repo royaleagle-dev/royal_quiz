@@ -10,6 +10,8 @@ from django.views.generic import ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.core.mail import EmailMessage
+from django.conf import settings
+from django.core.mail import send_mail
 
 
 # Create your views here.
@@ -18,9 +20,9 @@ def approve(request, pk):
     pQuestion = PendingQuestion.objects.get(pk = pk)
     subject = 'New Question'
     content = "Question: {0},\n Options: {1}, {2}, {3}, {4} \n Answer: {5}".format(pQuestion.question, pQuestion.option1, pQuestion.option2, pQuestion.option3, pQuestion.option4, pQuestion.answer)
-    to = ['ayotundeokunubi73@gmail.com']
-    msg = EmailMessage(subject, content, to)
-    msg.send()
+
+    send_mail(subject, content, 'royaleagle.dev@gmail.com', ['ayotundeokunubi73@gmail.com'], fail_silently=False)
+    
     pQuestion.delete()
     return redirect('users:approveQuestion')
     
