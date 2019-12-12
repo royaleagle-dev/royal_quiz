@@ -1,3 +1,8 @@
+.fade{
+    opacity:0;
+    transition:7s;
+}
+
 #question_container{
     font-family: candara, sans-serif;
     font-size: 1.5em;
@@ -47,3 +52,4 @@ td a {
 td a:hover{
         color:azure;
     }
+
