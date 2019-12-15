@@ -109,29 +109,26 @@ def profileMini(request, username):
     return render(request, 'users/profileMini.html', ctx)
 
 def signup(request):
-    return render(request, 'registration/signup.html')
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        email = request.POST.get ('email')
 
-def signup_processor(request):
-    username = request.POST['username']
-    password = request.POST['password']
-    email = request.POST['email']
-    
-    try:
-        user = User.objects.create_user(username, email, password)
-        user.save()
-        user.profile.firstname = request.POST['firstname']
-        user.profile.lastname = request.POST['lastname']
-        user.profile.status = 'bu'
-        user.save()
-    
-    except IntegrityError:
-        messages.warning(request, 'pls choose another username, the username already exists')
-        return redirect('users:signup')
-    except ValueError:
-        messages.warning(request, 'pls fill all the fields')
-        return redirect('users:signup')
-    
-    return redirect('users:coreLogin')
+        try:
+            user = User.objects.create_user(username, password, email)
+            user.save()
+            user.profile.firstname = request.POST.get('firstname')
+            user.profile.lastname = request.POST.get('lastname')
+            user.status = 'bu'
+            user.save()
+            messages.success(request, 'Account successfully created')
+            return redirect ('users:coreLogin')
+
+        except IntegrityError:
+            messages.warning(request, 'Please choose another username, the username already exists')
+            return redirect('users:signup')
+    else:
+        return render(request, 'registration/signup.html')
 
 def coreLogin(request):
     return render(request, 'registration/login.html')
