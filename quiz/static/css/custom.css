@@ -3,6 +3,30 @@
     transition:7s;
 }
 
+.msg-box{
+    margin:5px;
+    font-size:1.3em;
+    font-family: serif;
+}
+
+.msg-box-success{
+    padding:20px;
+    color:white;
+    background-color:green;
+}
+
+.msg-box-error{
+    padding:20px;
+    color:white;
+    background-color:red;
+}
+
+.msg-box-warning{
+    padding:20px;
+    color:black;
+    background-color:yellow;
+}
+
 #question_container{
     font-family: candara, sans-serif;
     font-size: 1.5em;

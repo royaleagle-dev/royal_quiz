@@ -15,78 +15,90 @@ from django.contrib.auth.models import Group
 from django.core.mail import BadHeaderError, send_mail
 
 
-
-class CategoryListView(ListView):
-    model = Category
-    template_name = 'quiz/mycatlist.html'
-    context_object_name = 'mycatlist'
-
-def contact(request):
-    if request.method == 'POST':
-        subject = request.POST['subject']
-        message = request.POST['message']
-        from_mail = 'royaleagle.dev@gmail.com'
-        if subject and message and from_mail:
-            if len(subject) != 0 and len(message) !=0 and len(from_mail) !=0:
-                try:
-                    send_mail(subject, message, from_email, ['ayotundeokunubi73@gmail.com'])
-                except BadHeaderError:
-                    return HttpResponse ('Something went wrong pls try again')
-                messages.success (request, 'suggestion successfully sent')
-                return redirect('index')
-            else:
-                messages.warning(request, 'pls fill in all required field')
-                return redirect('contact')
-    else:
-        return render(request, 'quiz/contact.html')
-    
-    return render (request, 'quiz/contact.html')
-
-def robots(request):
-    return render(request, 'quiz/robots.txt')
-
-question_id_list = [ ]
-
 # Create your views here.
 def index(request):
-    category_count = Category.objects.all().count()
-    question_count = Question.objects.all().count()
-    category = Category.objects.all()
-    available_question = Question.objects.count()
-    global question_id_list
-    question_id_list = []
-    
-    ctx = {
-    'available_question':available_question,
-    'category':category,
-    'category_count':category_count,
-    'question_count':question_count,
-    }
-    return render(request, 'quiz/index.html', ctx)
+    return render(request, 'quiz/index.html')
 
 @login_required
-def quiz_param(request, subject):
+def pre_quiz(request,):
+    subjects = Subject.objects.all().order_by('-title')
+    if request.method == 'POST':
+        user = request.user
+        selected_subject = request.POST.get('subject')
+        temp_question_range = request.POST.get('range')
+        user.profile.temp_question_range = temp_question_range
+        user.profile.counter = user.profile.temp_question_range
+        user.profile.attainable_score = 2 * int(user.profile.temp_question_range)
+        user.profile.score = 0
+        user.profile.current_questions_list = str(0)
+        user.profile.most_recent_quiz = selected_subject
+        user.save()
+        questions = Question.objects.filter(subject__id__exact = selected_subject)
+        for item in questions:
+            #questions_list.append(item.id)
+            user.profile.current_questions_list += (str(item.id)+',')
+            user.save()
+        return redirect('quiz_page')    
+    else:
+        ctx = {
+        'subjects':subjects,
+        }
+        return render(request, 'quiz/quiz_param.html', ctx)
+
+import random
+@login_required
+def quiz_page(request):
     user = request.user
-    question_range = int(user.profile.temp_question_range)
-    user.profile.most_recent_quiz = str(subject)
+    user.profile.counter -= 1
     user.save()
+    total_question = str(user.profile.current_questions_list)
+    questions = total_question.split(',')
+
+    #check if the user has answered the total questions
+    if user.profile.counter < 0:
+        return redirect('postProcessor')
+    
+    #original question to be presented to the user each time (at random)
+    real_question_id = random.choice(questions)
+    if len(real_question_id) < 1:
+        real_question_id = questions[0]
+    real_question = Question.objects.get(id = real_question_id)
+
+    #choices (4) for each randomly selected question.
+    choices = Choice.objects.filter(question__id__exact = real_question_id)
+
+    
     ctx = {
-        'subject':subject
+        'real_question':real_question,
+        'choices':choices,
     }
-    return render(request, 'quiz/quiz_param.html', ctx)
+    return render(request, 'quiz/quiz_page.html', ctx)
 
 
-def category_detail(request, category):
-    section = Subject.objects.filter(category__title__exact = category)
-    question_count = Question.objects.filter(category__title__exact = category).count()
-    ctx = {
-        'category':category,
-        'question_count':question_count,
-        'section': section
-    }
-    return render(request, 'quiz/category_detail.html', ctx)
+@login_required
+def mark(request):
+    user = request.user
+    if request.method == 'POST':
+        selected_choice = request.POST.get('choice')
+        selected_choice = Choice.objects.get(id = selected_choice)
+        if selected_choice.flag == True:
+            answer = 'correct'
 
+            #2 marks for each correct answer
+            score = 2
+            user.profile.score += score
+            user.profile.last_score = user.profile.score
+            user.save()
+            return redirect('quiz_page')
+        else:
+            answer = "incorrect"
+            score = 0
+            user.profile.score += 0
+            user.profile.last_core = user.profile.score
+            user.save()
+            return redirect('quiz_page')
 
+"""
 def process(request, subject):
     total_question = request.POST.get('tot_quiz_question', False)
     total_question = int(total_question)
@@ -99,11 +111,11 @@ def process(request, subject):
     for item in associated_questions:
         question_id_list.append(item.id)
     return redirect('quiz_page', subject = subject, pk = random.choice(question_id_list))
-
+"""
 
 def postProcessor(request):
     user = request.user
-    score = int(user.profile.score)
+    score = int(user.profile.percentage_score)
     user.profile.score_depo += (str(score)+',')
     user.save()
     
@@ -121,98 +133,16 @@ def postProcessor(request):
     
     user.profile.highest_score = max(temp)
     user.profile.lowest_score = min(temp)
+    user.profile.total_question_answered += user.profile.temp_question_range 
+    user.profile.total_quiz_count += 1
+    user.profile.RP += 3
+    user.profile.percentage_score = (int(user.profile.score) / int(user.profile.attainable_score)) * 100
     user.save()
     return redirect('end_exam')
 
 
-
-@login_required
-def quiz_page(request, pk, subject):
-    question = get_object_or_404(Question, pk = pk, subject__title = subject)
-    choices = Choice.objects.filter(question__exact = question)
-    user = request.user
-    
-    associated_question = Question.objects.filter(subject__title = subject)
-    for item in associated_question:
-        global question_id_list
-        question_id_list.append(item.id)
-
-     #sessions
-    #number of visits to this view as counted in the session variable
-    num_visits = request.session.get('num_visits',0)
-    request.session ['num_visits'] = num_visits +1
-    
-    if num_visits == int(user.profile.temp_question_range):
-        user = request.user
-        user.profile.total_question_answered += user.profile.temp_question_range
-        user.save()
-        user.profile.RP += (user.profile.temp_question_range/5)
-        user.save()
-        del request.session['num_visits']
-        return redirect ('postProcessor')
-    
-    ctx = {
-        'question':question,
-        'choices':choices,
-        'num_visits': num_visits,
-        #'question_id_list': question_id_list
-    }
-    return render(request, 'quiz/quiz_page.html', ctx)
-
-
-#work not yet done on this view.
-@login_required
-def mark(request, pk, subject):
-    global question_id_list
-    question = get_object_or_404(Question, pk = pk)
-    
-    try:
-        selected_choice = question.choice_set.get(pk=request.POST['choice'])
-    except(KeyError, Choice.DoesNotExist):
-        messages.warning(request, 'you do not choose any option')
-        return redirect ('quiz_page', pk = random.choice(question_id_list), subject = subject)
-    
-    associated_question = Question.objects.filter(subject__title = subject)
-    for items in associated_question:
-        #global question_id_list
-        question_id_list.append(items.id)
-        
-    next_question = random.choice(question_id_list)
-        
-    if selected_choice.flag == True:
-        answer = 'correct'
-        score = 10
-        user = request.user
-        #user_id = current_user.id
-        #user = User.objects.get(id = user_id)
-        #user_mark = MyUser.objects.get(username = user.username)
-        user.profile.score += score
-        user.save()
-        user.profile.last_score = user.profile.score
-        user.save()
-        messages.success(request, " CORRECT! you scored {0}".format(score))
-        return HttpResponseRedirect(reverse('quiz_page', args = [str(subject), str(next_question,)]))
-    
-    else:
-        total_question = Question.objects.all().count()
-        #next_question = random.choice(question_id_list)
-        answer = 'incorrect'
-        score = -10
-        
-        user = request.user
-        #user_id = current_user.id
-        #user = User.objects.get(id = user_id)
-        #user_mark = MyUser.objects.get(username = user.username)
-        
-        user.profile.score += score
-        user.save()
-        user.profile.last_score = user.profile.score
-        user.save()
-        
-        messages.error(request, "sorry incorrect answer")
-        return HttpResponseRedirect(reverse('quiz_page', args = [str(subject), str(next_question,)]))
-    
-    
 @login_required
 def end_exam(request):
-    return redirect('users:dashboardQuiz')
+    user = request.user
+    subject = Subject.objects.get(id = user.profile.most_recent_quiz)
+    return render(request, 'users/result.html', {'user':user,'subject':subject,})   

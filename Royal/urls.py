@@ -26,9 +26,6 @@ urlpatterns = [
     path('', RedirectView.as_view(url = '/quiz/')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('user_auth/', include('users.urls')),
-    path('categories/', views.CategoryListView.as_view(), name = 'mycatlist'),
-    path('contact/', views.contact, name = 'contact')
-
 ]
 
 urlpatterns += [

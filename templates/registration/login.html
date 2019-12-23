@@ -5,20 +5,22 @@
 <!-- Header -->
 <header class="w3-container w3-center" style="padding:128px 16px; background-image:url({%static 'images/2.jpg'%})">
   <h1 class="w3-margin w3-jumbo w3-text-white fade">Signin</h1>
-  <p class="w3-xlarge w3-text-white fade"></span>Signin now to begin from where you left off</p>
+  <p class="w3-xlarge w3-text-white fade">Signin now to begin from where you left off</p>
   <a href = "#started" class="w3-button w3-red w3-padding-large w3-large w3-margin-top fade">...</a>
 </header>
 {%endblock%}
 
 {%block content%}
-<!--messages-->
-<div align = "center">
-{% if messages %}
-    {% for message in messages %}
-    <small>{{ message }}</small>
-    {% endfor %}
-{% endif %}
-</div>
+<!--for flash messages-->
+        
+            {% if messages %}
+            <div align = "center" class = "msg-box">
+            {% for message in messages %}
+            <p {%if message.tags == 'success'%}class ="msg-box-success" {%elif message.tags == 
+            warning'%}class = "msg-box-warning" {%else%} class = "msg-box-error"{%endif%}>{{ message }}</p>
+            {% endfor %}
+            </div>
+            {% endif %}
 
 <!-- First Grid -->
 <div class="w3-row-padding w3-padding-64 w3-container fade">
@@ -37,12 +39,12 @@
 
     <div class="w3-third w3-center w3-border-red w3-topbar w3-rightbar w3-leftbar w3-bottombar w3-container w3-padding-32">
         <h1> Login </h1>
-      <form method = "post">
+      <form method = "post" action = "">
         {%csrf_token%}
         <label for = "username">Username</label>
-        <input type = "username" class = "form-control" required>
+        <input type = "username" class = "form-control" required name = "username">
         <label for = "password">Password</label>
-        <input type = "password" required class = "form-control"><br>
+        <input type = "password" required class = "form-control" name = "password"><br>
         <input type = "submit" value = "Signin" class = "btn btn-secondary btn-block">
         <a href = "" class = "w3-text-red">Forget Password</a><br><br>
         <p> Don't have an account?  <a href = "{%url 'users:signup'%}" class = "btn btn-outline-danger">    Register</a></p> 

@@ -1,37 +1,43 @@
-{%extends "quiz/base.html"%}
-
-{%block title%}
-{{subject}}
-{%endblock%}
+{%extends "users/dboard_base.html"%}
 
 {%block content%}
 
-<div class = "row">
+<div class = "row w3-white">
     <div class = "col">
-        <h1 align = "center" class = "w3-text-red w3-hover-shadow w3-topbar w3-bottombar w3-border-green">{{subject}}</h1>
-    
     <div>
-        <h2 marker = "sub-head" align = center> Set Question Parameters:</h2>
-        <form method = "post" action = "{%url 'process' subject%}">
+        <h2 marker = "sub-head" align = "center" style = "margin-top:100px;"> Set Question Parameters:</h2>
+        <div class = "" style = "margin-right:30px;margin-left:30px; padding:20px;">
+        <form method = "post" action = "" style = "margin-bottom:100px;">
             {%csrf_token%}
-            
-            <fieldset>
-                
-                <legend>Question Params:</legend>
-                
-                <input type = radio name = "tot_quiz_question" value = "5" checked><label>5 Questions  </label>
-                
-                <input type = radio name = "tot_quiz_question" value = "10"><label>10 Questions  </label>
-                
-                <input type = radio name = "tot_quiz_question" value = "15"><label>15 Questions  </label>
-                
-                <input type = radio name = "tot_quiz_question" value = "20"><label>20 Questions  </label>
-                
-                <input type = "submit" value = "START>>>" class = "btn btn-danger" style = "float:right">
-            
-            </fieldset>
-            
+                <h3>Question Parameters:</h4>
+                <div class = "row">
+                    <div class = "col-md-4">
+                        <label for = "Question_Range">Question Range</label>
+                        <select class = "form-control" name = "range">
+                            <option value = "5">5</option>
+                            <option value = "10">10</option>
+                            <option value = "15">15</option>
+                            <option value = "20">20</option>
+                            <option value = "25">25</option>
+                            <option value = "30">30</option>
+                        </select>
+                    </div>
+                    <div class = "col-md-4">
+                        <label for = "subject">Subject</label>
+                        {%if subjects%}
+                        <select class = "form-control" name = "subject">
+                            {%for subject in subjects%}
+                            <option class = "form-control" value = "{{subject.id}}">{{subject.title}}</option>
+                            {%endfor%}
+                        </select>
+                        {%endif%}
+                    </div>
+                    <div class = "col-md-4">
+                        <input type = "submit" value = "NEXT" class = "btn btn-outline-success" style = "margin-top:30px;">
+                    </div>
+                </div>
         </form>
+    </div>
     
     </div>
     

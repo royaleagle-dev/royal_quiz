@@ -19,7 +19,12 @@ class Profile(models.Model):
     date_done = models.DateTimeField(auto_now = True)
     score_depo = models.CharField(max_length = 10000)
     RP = models.IntegerField(default = 0)
+    total_quiz_count = models.IntegerField(default = 0)
     total_question_answered = models.IntegerField(default = 0)
+    counter = models.IntegerField(default = 0)
+    current_questions_list = models.CharField(max_length = 2000, blank = True, null = True)
+    attainable_score = models.IntegerField(default = 0)
+    percentage_score = models.IntegerField(default = 0)
     mystatus = (
         ('bu', 'basic user'),
         ('au', 'advanced user'),

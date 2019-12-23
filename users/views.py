@@ -12,6 +12,8 @@ from django.core.paginator import Paginator
 from django.core.mail import EmailMessage
 from django.conf import settings
 from django.core.mail import send_mail
+from quiz.models import Question, Category, Subject
+import datetime
 
 
 # Create your views here.
@@ -115,7 +117,7 @@ def signup(request):
         email = request.POST.get ('email')
 
         try:
-            user = User.objects.create_user(username, password, email)
+            user = User.objects.create_user(username = username, password = password, email = email)
             user.save()
             user.profile.firstname = request.POST.get('firstname')
             user.profile.lastname = request.POST.get('lastname')
@@ -131,13 +133,52 @@ def signup(request):
         return render(request, 'registration/signup.html')
 
 def coreLogin(request):
-    return render(request, 'registration/login.html')
+    if request.method == 'POST':
+        try:
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            user = authenticate(username=username, password=password)
+            profile = Profile.objects.get_or_create(user = user)
+
+            if user is not None:
+                if user.is_active:
+                    auth_login(request, user)
+                    return redirect('users:dashboard', username = username)
+                else:
+                    messages.warning(request, 'your account has been disabled temporarily, pls contact the admin')
+            else:
+                messages.warning(request, 'your account is not found in the pls re-register')
+                return redirect('users:coreLogin')
+        
+        except IntegrityError:
+            messages.error(request, 'pls fill in the correct credentials')
+            return redirect('users:coreLogin')
+    else:
+        return render(request, 'registration/login.html')
             
 @login_required
-def dashboard(request):
-    user = request.user
+def dashboard(request, username):
+    user = User.objects.get(username = username)
+    question_count = Question.objects.all().count()
+    category_count = Category.objects.all().count()
+    subject_count = Subject.objects.all().count()
+    user_count = User.objects.all().count()
+    #total quiz done by a user
+    total_quiz_count = user.profile.total_quiz_count
+    today = datetime.datetime.now()
+    today_date = (int(today.year), int(today.month), int(today.day))
+    new_question_count = Question.objects.filter(pub_date__date = datetime.date(today_date[0], today_date[1], today_date[2])).count()
+    new_user_count = User.objects.filter(date_joined__date = datetime.date(today_date[0], today_date[1], today_date[2])).count()
+
     ctx = {
-        'user':user,
+    'question_count':question_count,
+    'category_count':category_count,
+    'subject_count':subject_count,
+    'user_count': user_count,
+    'total_quiz_count': total_quiz_count,
+    'user': user,
+    'new_question_count':new_question_count,
+    'new_user_count': new_user_count,
     }
     return render(request, 'users/dashboard.html', ctx)
 
@@ -161,33 +202,4 @@ def dashboardQuiz(request):
     ctx = {
         'user':user,
     }
-    return render(request, 'users/dashboardQuiz.html', ctx)
-
-def coreLoginProcessor(request):
-    if request.method == 'POST':
-        
-        try:
-            username = request.POST['username']
-            password = request.POST['password']
-        
-        except IntegrityError:
-            messages.error(request, 'pls fill in the correct credentials')
-            return redirect('users:coreLogin')
-        
-        try:
-            user = authenticate(username=username, password=password)
-            profile = Profile.objects.get_or_create(user = user)
-            
-    
-            if user is not None:
-                if user.is_active:
-                    auth_login(request, user)
-                    return redirect('mycatlist')
-                else:
-                    messages.warning(request, 'your account has been disabled temporarily, pls contact the admin')
-            else:
-                messages.warning(request, 'your account is not found in the database pls re-register')
-                return redirect('users:coreLogin')
-        except IntegrityError:
-            messages.error(request, 'pls fill in the correct credentials')
-            return redirect('users:coreLogin')
+    return render(request, 'users/dboard_base.html', ctx)

@@ -1,69 +1,81 @@
-{%extends 'quiz/base.html'%}
+{%extends 'users/dboard_base.html'%}
 
- <!--   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
- <link rel="canonical" href="https://getbootstrap.com/docs/4.1/examples/dashboard/">-->
-
-{%block info%}
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" style = "margin-top:50px;">
-        <h1 class="h2"><a href = "{%url 'users:dashboard'%}">Dashboard</a></h1>
-        {%if user.profile.status == 'au'%}<a class = "btn btn-outline-primary" href = "{%url 'users:approveQuestion'%}">Pending Questions</a>{%endif%}
-        <div class="btn-toolbar mb-2 mb-md-0">
-            <div class="btn-group mr-2">
-                <button class="btn btn-sm btn-outline-secondary">RP</button>
-                <button class="btn btn-sm btn-outline-secondary">{{user.profile.RP}}</button>
-                <span class = "btn btn-outline-danger">{{user.profile.get_status_display}}</span>
-              </div>
-            </div>
-          </div>
-{%endblock%}
-
-            
-{%block content%}
-<div class = "row">
-
-    <div class = "col-md-8 offset-md-2 w3-card-4 w3-white w3-border-green w3-leftbar">
-        
-        <div class = "row">
-        
-            <div class = "col-md-2" align = "center" style = "border-bottom:100px"><a href = "{%url 'users:dashboardUsers'%}">
-                <h3 class = "text-center text-info">Users</h3>
-                <span class = "fa fa-users text-success" style = "font-size:60px;border-bottom:30px;"></span>
-                </a>
-            </div>
-            
-            <div class = "col-md-2 offset-md-1" align = "center"><a href = "{%url 'users:dashboardQuiz'%}">
-                <h3 class = "text-center text-info">Quiz</h3>
-                <span class = "fa fa-book text-success" style = "font-size:60px;border-bottom:30px;"></span>
-                </a>
-            </div>
-            
-            <div class = "col-md-2 offset-md-1" align = "center"><a href = "{%url 'users:profile' user.username%}">
-                <h3 class = "text-center text-info">Profile</h3>
-                <span class = "fa fa-user text-success" style = "font-size:60px;border-bottom:30px;"></span>
-                </a>
-            </div>
-            
-            <div class = "col-md-2 offset-md-1" align = "center"><a href = "{%url 'users:scoreBoard'%}">
-                <h3 class = "text-center text-info">Scoreboard</h3>
-                <span class = "fa fa-checkboard text-success" style = "font-size:60px;border-bottom:30px;"></span>
-                </a>
-            </div>
-        
+{%block overview%}
+  <div class="w3-row-padding w3-margin-bottom">
+    <div class="w3-quarter">
+      <div class="w3-container w3-red w3-padding-16">
+        <div class="w3-left"><i class="fa fa-coins w3-xxxlarge"></i></div>
+        <div class="w3-right">
+          <h3>{{user.profile.RP}}</h3>
         </div>
-        
-        <hr class = "w3-border-green w3-bottombar">
-    
+        <div class="w3-clear"></div>
+        <h4>Royal Points</h4>
+      </div>
     </div>
-    
-
-</div>
-                 
-            
+    <div class="w3-quarter">
+      <div class="w3-container w3-blue w3-padding-16">
+        <div class="w3-left"><i class="fa fa-book w3-xxxlarge"></i></div>
+        <div class="w3-right">
+          <h3>{{total_quiz_count}}</h3>
+        </div>
+        <div class="w3-clear"></div>
+        <h4>Total Quiz</h4>
+      </div>
+    </div>
+    <div class="w3-quarter">
+      <div class="w3-container w3-teal w3-padding-16">
+        <div class="w3-left"><i class="fa fa-book-open w3-xxxlarge"></i></div>
+        <div class="w3-right">
+          <h6>{{user.profile.get_status_display}}</h6>
+        </div>
+        <div class="w3-clear"></div>
+        <h4>Status</h4>
+      </div>
+    </div>
+    <div class="w3-quarter">
+      <div class="w3-container w3-orange w3-text-white w3-padding-16">
+        <div class="w3-left"><i class="fa fa-users w3-xxxlarge"></i></div>
+        <div class="w3-right">
+          <h3>{{user_count}}</h3>
+        </div>
+        <div class="w3-clear"></div>
+        <h4>Users</h4>
+      </div>
+    </div>
+  </div>
 {%endblock%}
 
-{%block title%}Dashboard{%endblock%}
+{%block content%}
 
-
-
-
+<div class="">
+        <h5>General Information</h5>
+        <table class="w3-table w3-striped w3-white">
+          <tr>
+            <td><i class="fa fa-question-circle w3-text-blue w3-large"></i></td>
+            <td>Total questions</td>
+            <td><i>{{question_count}}</i></td>
+          </tr>
+          <tr>
+            <td><i class="fa fa-book-open w3-text-red w3-large"></i></td>
+            <td>Total Subjects</td>
+            <td><i>{{subject_count}}</i></td>
+          </tr>
+          <tr>
+            <td><i class="fa fa-book w3-text-yellow w3-large"></i></td>
+            <td>Available categories</td>
+            <td><i>{{category_count}}</i></td>
+          </tr>
+          <tr>
+            <td><i class="fa fa-comment w3-text-red w3-large"></i></td>
+            <td>New Users</td>
+            <td><i>{{new_user_count}}</i></td>
+          </tr>
+          <tr>
+            <td><i class="fa fa-bookmark w3-text-blue w3-large"></i></td>
+            <td>New Questions</td>
+            <td><i>{{new_question_count}}</i></td>
+          </tr>
+          <tr>
+        </table>
+      </div>
+{%endblock%}

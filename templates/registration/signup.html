@@ -12,14 +12,15 @@
       <h1 class = "fade">Register</h1>
       <h5 class="w3-padding-32"><span class = "fade">Please fill the form below</span></h5>
       
-      <!--for flash messages-->
-      <div align = "center">
+        <!--for flash messages-->
         {% if messages %}
-        {% for message in messages %}
-            <small>{{ message }}</small>
-        {% endfor %}
-        {% endif %}
-    </div>
+            <div align = "center" class = "msg-box">
+            {% for message in messages %}
+            <p {%if message.tags == 'success'%}class ="msg-box-success" {%elif message.tags == 
+            warning'%}class = "msg-box-warning" {%else%} class = "msg-box-error"{%endif%}>{{ message }}</p>
+            {% endfor %}
+            </div>
+            {% endif %}
 
 
         <form method = "post" action = "">
@@ -33,7 +34,7 @@
                 
                 <input type = "text" placeholder = "username" name = "username" id = "username" class = "form-control" required><br>
                 
-                <input type = "password" placeholder = "password" name = "password" id = "password" class = "form-control" required maxlength = 4><br>
+                <input type = "password" placeholder = "password" name = "password" id = "password" class = "form-control" required maxlength = 16><br>
                 
                 <input type = "email" placeholder = "email" name = "email" id = "email" class = "form-control" required><br>
         
