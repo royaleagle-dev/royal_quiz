@@ -1,0 +1,62 @@
+{%extends "users/dboard_base.html"%}
+{%load static%}
+
+
+
+{%block content%}
+<div style = "margin-left:30px;margin-right:30px">
+                    <h2 class = "w3-text-green">Add a Question</h2>
+                    <form method = "post" action = "">
+                        {%csrf_token%}
+                        <label for = "question">Question</label>
+                        <input type = "text" class = "form-control" maxlength = "255" name = "question" id = "question" required>
+                        <hr>
+                        <div class = "row">
+                            <div class = "col-md-6">
+                                    <select class = "form-control" required name = "category">
+                                        {%for item in category%}
+                                            <option value = "{{item.title}}" id = "{{item.id}}">{{item.title}}</option>
+                                        {%endfor%}
+                                    </select>
+                            </div>
+                            
+                            <div class = "col-md-6">
+                                    <select class = "form-control" required name = "subject">
+                                        {%for item in subject%}
+                                            <option value = "{{item.title}}" id = "{{item.id}}">{{item.title}}</option>
+                                        {%endfor%}
+                                    </select>
+                            </div>
+                        </div>
+                        <hr>
+                        
+                        <div class = "row">
+                            <div class = "col-md-3">
+                                <input class = "form-control" type = "text" placeholder = "option 1" name = "option1" maxlength = "255" id = "option1" required>
+                            </div>
+                            
+                            <div class = "col-md-3">
+                                <input class = "form-control" type = "text" placeholder = "option 3" name = "option2" maxlength = "255" id = "option2" required>
+                            </div>
+                            
+                            <div class = "col-md-3">
+                                <input class = "form-control" type = "text" placeholder = "option 2" name = "option3" maxlength = "255" id = "option3" required>
+                            </div>
+                            
+                            <div class = "col-md-3">
+                                <input class = "form-control" type = "text" placeholder = "option 4" name = "option4" maxlength = "255" id = "option4" required>
+                            </div>
+                        </div>
+                        <hr>
+                        
+                        <label for = "question">Answer</label>
+                        <input type = "text" class = "form-control" maxlength = "255" name = "answer" placeholder = " the answer provided here must be in the options above" id = "answer" required><br>
+                        
+                        <input type = "submit" class = "btn btn-info btn-block" value = "Add Question" id = 'add' required>
+                    
+                    </form>
+                </div>
+
+                <script src = "{%static 'js/checkAnswer.js'%}">
+                </script>
+{%endblock%}

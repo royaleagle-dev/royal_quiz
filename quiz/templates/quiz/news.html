@@ -1,0 +1,16 @@
+{%extends "users/dboard_base.html"%}
+
+{%block content%}
+<div style = "margin-left:30px;margin-right:30px">
+	<div>
+		{%for item in news%}
+		<div class = "w3-panel w3-blue w3-card-2 w3-container">
+			<h3><strong>{{item.title}}</strong></h3>
+			<p>{{item.body | linebreaks}}</p>
+			<small class = "w3-blue" style = "margin-right:10px;float:right"><i>{{item.pub_date}}<br><span>{{item.author}}</span></i></small>
+		</div>
+		{%endfor%}
+
+	</div>
+</div>
+{%endblock%}

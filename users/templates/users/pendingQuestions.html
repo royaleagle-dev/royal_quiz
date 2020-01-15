@@ -1,0 +1,27 @@
+{%extends "users/dboard_base.html"%}
+{%load static%}
+
+
+
+{%block content%}
+<div style = "margin-left:30px;margin-right:30px">
+                       {%for item in question%}
+        <div class = "w3-panel w3-white">
+            <h3>{{item.question}}</h3>
+            <p>Category <button class = "btn btn-danger">{{item.category}}</button> | Subject <button class = "btn btn-danger">{{item.subject}}</button></p>
+            
+            <p>A: {{item.option1}} |  B: {{item.option2}} |  C: {{item.option3}} |  D: {{item.option4}} | Answer: {{item.answer}} </p>
+        </div>
+        
+        <a href = "{%url 'users:approve' item.id%}" class = "btn btn-outline-success">Approve</a> <a href = "{%url 'users:decline' item.id%}" id = 'delete' class = "btn btn-outline-danger">Decline</a>
+
+    {%endfor%}
+
+<script>
+    const del = document.querySelector('#delete');
+    function message(){
+        alert('you have successfully deleted this message from the database')
+    }
+    del.addEventListener('click', message);
+</script>
+{%endblock%}

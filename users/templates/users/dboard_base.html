@@ -42,9 +42,10 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     <a href="{%url 'pre_quiz'%}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i> Start Quiz</a>
     <a href="{%url 'users:profile' user.username%}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-user"></i>  Profile</a>
     <!--<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i> Users</a>-->
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-book"></i> Submit a Question</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i>  News</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-chalkboard"></i>  Scoreboard</a>
+    <a href="{%url 'users:addQuestion' user.username%}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-book"></i> Submit a Question</a>
+    <a href="{%url 'users:pendingQuestion' user.username%}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-book"></i> Pending Questions</a>
+    <a href="{%url 'news'%}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i>  News</a>
+    <!--<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-chalkboard"></i>  Scoreboard</a>-->
     <br><br>
   </div>
 </nav>

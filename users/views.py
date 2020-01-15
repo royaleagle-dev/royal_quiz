@@ -38,7 +38,7 @@ def decline(request, pk):
 
 
 @login_required
-def approveQuestion(request):
+def pendingQuestion(request, username):
     user = request.user
     if user.profile.status == 'au':
         question = PendingQuestion.objects.filter(is_approved__exact = False).order_by('-id')
@@ -47,14 +47,16 @@ def approveQuestion(request):
             'question':question,
             'question_count':question_count
         }
-        return render(request, 'users/approveQuestion.html', ctx)
+        return render(request, 'users/pendingQuestions.html', ctx)
     else:
         messages.error (request, 'sorry you do not have the permission to view this page')
-        return redirect ('index')
+        return redirect ('users:dashboard')
 
 
 @login_required
-def addQuestion(request):
+def addQuestion(request, username):
+    category = Category.objects.all()
+    subject = Subject.objects.all()
     if request.method == 'POST':
         question = request.POST.get('question')
         option1 = request.POST.get('option1')
@@ -66,15 +68,15 @@ def addQuestion(request):
         answer = request.POST.get('answer')
         
         question = PendingQuestion(question = question, option1 = option1, option2 = option2, option3 = option3, option4 = option4, sender = request.user.username, is_approved = False, category = category, subject = subject, answer = answer )
-        
         question.save()
-        
         messages.success (request, 'Question successfully submitted, and is under processing. The question will be added to the database after processing is complete')
-        
         return redirect('users:profile', username = request.user.username)
     else:
-        messages.error (reqeust, "you are not permitted be view this page")
-        return redirect ('index')
+        ctx = {
+        'category':category,
+        'subject':subject,
+        }
+        return render(request, 'users/addQuestion.html', ctx)
 
 def profileUpdate(request, username):
     user = User.objects.get(username = username)
@@ -103,12 +105,13 @@ def profile(request, username):
     }
     return render(request, 'users/profile.html', ctx)
 
-def profileMini(request, username):
+'''def profileMini(request, username):
     user = User.objects.get(username = username)
     ctx = {
         'user':user
     }
     return render(request, 'users/profileMini.html', ctx)
+    '''
 
 def signup(request):
     if request.method == 'POST':
@@ -194,7 +197,6 @@ class scoreBoard(LoginRequiredMixin, ListView):
     context_object_name = 'users'
     template_name = 'users/scoreBoard.html'
     queryset = User.objects.all().order_by('-profile__RP')[:5]
-
 
 @login_required
 def dashboardQuiz(request):

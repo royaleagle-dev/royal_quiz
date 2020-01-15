@@ -31,4 +31,14 @@ class Choice(models.Model):
     pub_date = models.DateTimeField(auto_now = True)
     
     def __str__(self):
-        return self.choice  
+        return self.choice
+
+
+class News(models.Model):
+    title = models.CharField(max_length = 1000)
+    body = models.TextField(max_length = 10000)
+    pub_date = models.DateTimeField(auto_now = True)
+    author = models.CharField(max_length = 10, default = 'RoyalEagle Team', editable = False)
+
+    def __str__(self):
+        return self.title

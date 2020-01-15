@@ -22,6 +22,17 @@
                 <td>Number of Questions taken</td>
                 <td>{{user.profile.temp_question_range}}</td>
             </tr>
+
+            
+            <tr>
+                <td>Total Correct Answers</td>
+                <td>{{user.profile.correct_questions}} question(s)</td>
+            </tr>
+
+            <tr>
+                <td>Total Wrong Answers</td>
+                <td>{{user.profile.wrong_questions}} question(s)</td>
+            </tr>
             
         </table>
             
@@ -44,7 +55,7 @@
             
             <tr>
                 <td>Highest Score</td>
-                <td>{{user.profile.highest_score}}</td>
+                <td>{{user.profile.highest_score}}%</td>
             </tr>
         
         

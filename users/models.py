@@ -25,6 +25,8 @@ class Profile(models.Model):
     current_questions_list = models.CharField(max_length = 2000, blank = True, null = True)
     attainable_score = models.IntegerField(default = 0)
     percentage_score = models.IntegerField(default = 0)
+    correct_questions = models.IntegerField(default = 0)
+    wrong_questions = models.IntegerField(default = 0)
     mystatus = (
         ('bu', 'basic user'),
         ('au', 'advanced user'),

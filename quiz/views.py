@@ -9,7 +9,10 @@ from django.contrib.auth.decorators import login_required
 from . forms import SignupForm
 import random
 from django.http import QueryDict
-from django.views.generic import ListView, DetailView
+
+#class django.views.generic.detail.DetailView
+from django.views.generic.detail import DetailView
+from django.views.generic.list import ListView
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import Group
 from django.core.mail import BadHeaderError, send_mail
@@ -30,6 +33,8 @@ def pre_quiz(request,):
         user.profile.counter = user.profile.temp_question_range
         user.profile.attainable_score = 2 * int(user.profile.temp_question_range)
         user.profile.score = 0
+        user.profile.correct_questions = 0
+        user.profile.wrong_questions = 0
         user.profile.current_questions_list = str(0)
         user.profile.most_recent_quiz = selected_subject
         user.save()
@@ -87,6 +92,7 @@ def mark(request):
             #2 marks for each correct answer
             score = 2
             user.profile.score += score
+            user.profile.correct_questions +=1
             user.profile.last_score = user.profile.score
             user.save()
             return redirect('quiz_page')
@@ -94,6 +100,7 @@ def mark(request):
             answer = "incorrect"
             score = 0
             user.profile.score += 0
+            user.profile.wrong_questions += 1
             user.profile.last_core = user.profile.score
             user.save()
             return redirect('quiz_page')
@@ -140,9 +147,15 @@ def postProcessor(request):
     user.save()
     return redirect('end_exam')
 
-
 @login_required
 def end_exam(request):
     user = request.user
     subject = Subject.objects.get(id = user.profile.most_recent_quiz)
-    return render(request, 'users/result.html', {'user':user,'subject':subject,})   
+    return render(request, 'users/result.html', {'user':user,'subject':subject,})
+
+from . models import News
+class NewsListView(ListView):
+    model = News
+    template_name = 'quiz/news.html'
+    context_object_name = 'news'
+    queryset = News.objects.all().order_by('-title')

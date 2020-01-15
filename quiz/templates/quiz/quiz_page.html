@@ -10,16 +10,15 @@
         <form method = "post" action = "{%url 'mark'%}">
         {%csrf_token%}
         {%for item in choices%}
-         <input type = "radio" name = "choice" value = "{{item.id}}">{{item.choice}}<br>
+         <input type = "radio" name = "choice" value = "{{item.id}}" required>{{item.choice}}<br>
         {%endfor%}
         <input type = "submit" value = "Next" class = "btn btn-outline-info w3-right"> 
     </form>
     </div>
 
     <div class = "col-md-3">
-        <a href = "" class = "btn btn-outline-danger btn-block">End Quiz</a>
-        <a href = "" class = "btn btn-outline-success btn-block">See Result</a>
-        <a href = "" class = "btn btn-outline-warning btn-block">Abort Quiz</a> 
+        <a href = "{%url 'end_exam'%}" class = "btn btn-outline-danger btn-block">End Quiz</a>
+        <a href = "{%url 'users:dashboard' user.username%}" class = "btn btn-outline-warning btn-block">Abort Quiz</a> 
     </div>       
 </div>
     
