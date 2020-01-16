@@ -20,13 +20,12 @@ import datetime
 
 def approve(request, pk):
     pQuestion = PendingQuestion.objects.get(pk = pk)
-    subject = 'New Question'
-    content = "Question: {0},\n Options: {1}, {2}, {3}, {4} \n Answer: {5}".format(pQuestion.question, pQuestion.option1, pQuestion.option2, pQuestion.option3, pQuestion.option4, pQuestion.answer)
-
-    send_mail(subject, content, 'royaleagle.dev@gmail.com', ['ayotundeokunubi73@gmail.com'], fail_silently=False)
-    
+    category = Category.objects.get(title = pQuestion.category)
+    subject = Subject.objects.get(title = pQuestion.subject)
+    q = Question (title = pQuestion.question, pub_date = datetime.datetime.now().date(), category = category, subject = subject )
+    q.save()
     pQuestion.delete()
-    return redirect('users:approveQuestion')
+    return redirect('users:dashboard', username = request.user.username)
     
     
 
@@ -34,7 +33,7 @@ def decline(request, pk):
     pQuestion = PendingQuestion.objects.get(pk=pk)
     pQuestion.delete()
     messages.success (request, 'Question successfully deleted from database.')
-    return redirect('users:approveQuestion')
+    return redirect('users:dashboard', username = request.user.username)
 
 
 @login_required

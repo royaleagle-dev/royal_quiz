@@ -4,8 +4,10 @@
 
 
 {%block content%}
-<div style = "margin-left:30px;margin-right:30px">
-                       {%for item in question%}
+<div style = "margin-left:30px;margin-right:30px;">
+    {%if question%}
+
+    {%for item in question%}
         <div class = "w3-panel w3-white">
             <h3>{{item.question}}</h3>
             <p>Category <button class = "btn btn-danger">{{item.category}}</button> | Subject <button class = "btn btn-danger">{{item.subject}}</button></p>
@@ -16,6 +18,10 @@
         <a href = "{%url 'users:approve' item.id%}" class = "btn btn-outline-success">Approve</a> <a href = "{%url 'users:decline' item.id%}" id = 'delete' class = "btn btn-outline-danger">Decline</a>
 
     {%endfor%}
+
+    {%else%}
+    <h4 style = "color:red" align = "center">There Are No Pending Questions</h4>
+    {%endif%}
 
 <script>
     const del = document.querySelector('#delete');

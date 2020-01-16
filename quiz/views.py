@@ -17,6 +17,8 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import Group
 from django.core.mail import BadHeaderError, send_mail
 
+def about(request):
+    return render(request, 'quiz/about.html')
 
 # Create your views here.
 def index(request):
