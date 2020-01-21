@@ -27,6 +27,7 @@ class Profile(models.Model):
     percentage_score = models.IntegerField(default = 0)
     correct_questions = models.IntegerField(default = 0)
     wrong_questions = models.IntegerField(default = 0)
+    image = models.ImageField(upload_to = 'media/')
     mystatus = (
         ('bu', 'basic user'),
         ('au', 'advanced user'),

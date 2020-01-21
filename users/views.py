@@ -27,14 +27,11 @@ def approve(request, pk):
     pQuestion.delete()
     return redirect('users:dashboard', username = request.user.username)
     
-    
-
 def decline(request, pk):
     pQuestion = PendingQuestion.objects.get(pk=pk)
     pQuestion.delete()
     messages.success (request, 'Question successfully deleted from database.')
     return redirect('users:dashboard', username = request.user.username)
-
 
 @login_required
 def pendingQuestion(request, username):
@@ -69,7 +66,7 @@ def addQuestion(request, username):
         question = PendingQuestion(question = question, option1 = option1, option2 = option2, option3 = option3, option4 = option4, sender = request.user.username, is_approved = False, category = category, subject = subject, answer = answer )
         question.save()
         messages.success (request, 'Question successfully submitted, and is under processing. The question will be added to the database after processing is complete')
-        return redirect('users:profile', username = request.user.username)
+        return redirect('users:dashboard', username = request.user.username)
     else:
         ctx = {
         'category':category,
