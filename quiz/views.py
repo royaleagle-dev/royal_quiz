@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from . forms import SignupForm
 import random
 from django.http import QueryDict
+import datetime
 
 #class django.views.generic.detail.DetailView
 from django.views.generic.detail import DetailView
@@ -31,6 +32,27 @@ def pre_quiz(request,):
         user = request.user
         selected_subject = request.POST.get('subject')
         temp_question_range = request.POST.get('range')
+        timeRange = request.POST.get('timeRange')
+        
+        #start time
+        startTime = datetime.datetime.today()
+        year = startTime.year
+        month = startTime.month
+        day = startTime.day
+        hour = startTime.hour
+        minute = startTime.minute
+        seconds = startTime.second
+        
+        #end time
+        minute = minute+int(timeRange)
+        if minute >= 60:
+            minute = minute-60
+            hour = hour + 1
+        endtime = datetime.datetime(year, month, day, hour, minute, seconds)
+        user.profile.endtime = endtime
+        
+        
+        user.profile.timeRange = timeRange
         user.profile.temp_question_range = temp_question_range
         user.profile.counter = user.profile.temp_question_range
         user.profile.attainable_score = 2 * int(user.profile.temp_question_range)

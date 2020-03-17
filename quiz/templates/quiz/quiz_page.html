@@ -2,6 +2,17 @@
 
 {%block content%}
 
+<div class = "row">
+    <div class = "col">
+        <p style = "padding-left:20px;display:none;" id = "endtime">{{request.user.profile.endtime}}</p>
+        <div class = "w3-panel w3-card-4">
+        <p class = "text-center" style = "margin-top:10px;">
+            <span class = "hour" style = "display:none;"></span><span class = "min btn btn-lg btn-success"></span> : <span class = "secs btn btn-lg btn-danger"></span>------------<span class = "btn btn-lg btn-warning">{{request.user.profile.counter}}</span>
+        </p>
+        </div>
+    </div>
+</div>
+
 <div class = "row w3-white" style = "padding-left:20px;padding-top:50px;padding-bottom:20px;">
     <div class = "col-md-9">
         <h5>{{real_question.title}}</h5>
@@ -17,10 +28,41 @@
     </div>
 
     <div class = "col-md-3">
-        <a href = "{%url 'end_exam'%}" class = "btn btn-outline-danger btn-block">End Quiz</a>
-        <a href = "{%url 'users:dashboard' user.username%}" class = "btn btn-outline-warning btn-block">Abort Quiz</a> 
+        <a href = "{%url 'postProcessor'%}" class = "btn btn-outline-danger btn-block">End Quiz</a> 
     </div>       
 </div>
+
+<script>
+    const endtime = document.querySelector('#endtime');
+    let now = new Date().getTime();
+    
+    let timer = setInterval(function(){
+        let now = new Date().getTime();
+        let then = new Date(endtime.textContent)
+			let t = then - now;
+			if(t>=0){
+				let days = Math.floor(t/(1000*60*60*24));
+				let hours = Math.floor((t%(1000*60*60*24))/(1000*60*60));
+				let mins = Math.floor((t%(1000*60*60))/(1000*60));
+				let secs = Math.floor((t%(1000*60))/1000);
+				
+                console.log(mins)
+                console.log(secs)
+				//document.getElementById("timer-days").innerHTML = days + "<span class = 'label'>DAY(S)</span>";
+				document.querySelector(".hour").textContent = hours;
+				document.querySelector(".min").textContent = mins;
+				document.querySelector(".secs").textContent = secs;
+                
+                if (mins === 0 && secs === 0){
+                    window.alert("Unfortunately! Your time is up.")
+                    window.location = ("/quiz/quiz/postProcessor/")
+                }
+			}
+			else{
+				//document.getElementById("timer").innerHTML = "The countdown is over"
+				}
+        }, 1000);
+</script>
     
 {%endblock%}
 

@@ -28,6 +28,8 @@ class Profile(models.Model):
     correct_questions = models.IntegerField(default = 0)
     wrong_questions = models.IntegerField(default = 0)
     image = models.ImageField(upload_to = 'media/')
+    timeRange = models.CharField(default = '', max_length = 255)
+    endtime = models.CharField(default = '', max_length = 255)
     mystatus = (
         ('bu', 'basic user'),
         ('au', 'advanced user'),
