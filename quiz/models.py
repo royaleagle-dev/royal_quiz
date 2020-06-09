@@ -1,4 +1,5 @@
 from django.db import models
+from django_random_queryset import RandomManager
 
 # Create your models here.
 
@@ -7,6 +8,7 @@ class Question(models.Model):
     pub_date = models.DateTimeField(auto_now = True)
     category = models.ForeignKey('Category', on_delete = models.SET_NULL, null = True, blank = True)
     subject = models.ForeignKey('Subject', on_delete = models.SET_NULL, null = True)
+    objects = RandomManager()
     
     def __str__(self):
         return self.title
