@@ -9,7 +9,7 @@ urlpatterns = [
     path('set_quiz/', views.pre_quiz, name = 'pre_quiz'),
     #path('set_quiz/process/<str:subject>/', views.process, name = 'process'),
     path('quiz/postProcessor/', views.postProcessor, name = 'postProcessor'),
-    path('quiz_page/', views.quiz_page, name = 'quiz_page'),
+    path('quiz_page/<str:selected_subject>', views.quiz_page, name = 'quiz_page'),
     path('news/', views.NewsListView.as_view(), name = 'news'),
     path('about/', views.about, name = 'about')
 ]

@@ -7,8 +7,9 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from . forms import SignupForm
-import random
+#import random
 from django.http import QueryDict
+import datetime
 
 #class django.views.generic.detail.DetailView
 from django.views.generic.detail import DetailView
@@ -31,53 +32,79 @@ def pre_quiz(request,):
         user = request.user
         selected_subject = request.POST.get('subject')
         temp_question_range = request.POST.get('range')
+        timeRange = request.POST.get('timeRange')
+        
+        #start time
+        startTime = datetime.datetime.today()
+        year = startTime.year
+        month = startTime.month
+        day = startTime.day
+        hour = startTime.hour
+        minute = startTime.minute
+        seconds = startTime.second
+        
+        #end time
+        minute = minute+int(timeRange)
+        if minute >= 60:
+            minute = minute-60
+            hour = hour + 1
+        endtime = datetime.datetime(year, month, day, hour, minute, seconds)
+        user.profile.endtime = endtime
+        
+        
+        user.profile.timeRange = timeRange
         user.profile.temp_question_range = temp_question_range
-        user.profile.counter = user.profile.temp_question_range
+        #user.profile.counter = user.profile.temp_question_range
         user.profile.attainable_score = 2 * int(user.profile.temp_question_range)
         user.profile.score = 0
         user.profile.correct_questions = 0
         user.profile.wrong_questions = 0
-        user.profile.current_questions_list = str(0)
+        #user.profile.current_questions_list = str(0)
         user.profile.most_recent_quiz = selected_subject
         user.save()
         questions = Question.objects.filter(subject__id__exact = selected_subject)
+        
+        '''
         for item in questions:
-            #questions_list.append(item.id)
             user.profile.current_questions_list += (str(item.id)+',')
             user.save()
-        return redirect('quiz_page')    
+        '''
+        return redirect('quiz_page', selected_subject = selected_subject)    
     else:
         ctx = {
         'subjects':subjects,
         }
         return render(request, 'quiz/quiz_param.html', ctx)
 
-import random
+#import random
 @login_required
-def quiz_page(request):
+def quiz_page(request, selected_subject):
     user = request.user
-    user.profile.counter -= 1
-    user.save()
-    total_question = str(user.profile.current_questions_list)
-    questions = total_question.split(',')
+    #user.profile.counter -= 1
+    #user.save()
+    #total_question = str(user.profile.current_questions_list)
+    #questions = total_question.split(',')
 
     #check if the user has answered the total questions
-    if user.profile.counter < 0:
-        return redirect('postProcessor')
+    #if user.profile.counter < 0:
+    #    return redirect('postProcessor')
     
     #original question to be presented to the user each time (at random)
+    
+    real_question = Question.objects.filter(subject__exact = selected_subject).random(user.profile.temp_question_range) 
+    '''
     real_question_id = random.choice(questions)
     if len(real_question_id) < 1:
         real_question_id = questions[0]
-    real_question = Question.objects.get(id = real_question_id)
+    real_question = Question.objects.get(id = real_question_id)'''
 
     #choices (4) for each randomly selected question.
-    choices = Choice.objects.filter(question__id__exact = real_question_id)
+    #choices = Choice.objects.filter(question__id__exact = real_question_id)
 
     
     ctx = {
         'real_question':real_question,
-        'choices':choices,
+        #'choices':choices,
     }
     return render(request, 'quiz/quiz_page.html', ctx)
 
@@ -85,43 +112,27 @@ def quiz_page(request):
 @login_required
 def mark(request):
     user = request.user
-    if request.method == 'POST':
-        selected_choice = request.POST.get('choice')
-        selected_choice = Choice.objects.get(id = selected_choice)
-        if selected_choice.flag == True:
-            answer = 'correct'
-
-            #2 marks for each correct answer
+    data = request.GET.get('choiceIds')
+    answers_list = data.split(',')
+    print(answers_list)
+    for items in answers_list:
+        choice = Choice.objects.get(id = int(items))
+        if choice.flag == True:
+            #answer is correct
             score = 2
             user.profile.score += score
             user.profile.correct_questions +=1
             user.profile.last_score = user.profile.score
             user.save()
-            return redirect('quiz_page')
         else:
-            answer = "incorrect"
+            #answer is not correct
             score = 0
-            user.profile.score += 0
-            user.profile.wrong_questions += 1
-            user.profile.last_core = user.profile.score
+            user.profile.score +=0
+            user.profile.wrong_questions +=1
+            user.profile.last_score = user.profile.score
             user.save()
-            return redirect('quiz_page')
-
-"""
-def process(request, subject):
-    total_question = request.POST.get('tot_quiz_question', False)
-    total_question = int(total_question)
-    user = request.user
-    user.profile.temp_question_range = total_question
-    user.profile.score = 0
-    user.save()
-    associated_questions = Question.objects.filter(subject__title = subject)
-    global question_id_list
-    for item in associated_questions:
-        question_id_list.append(item.id)
-    return redirect('quiz_page', subject = subject, pk = random.choice(question_id_list))
-"""
-
+    return redirect('postProcessor')
+        
 def postProcessor(request):
     user = request.user
     score = int(user.profile.percentage_score)

@@ -21,13 +21,15 @@ class Profile(models.Model):
     RP = models.IntegerField(default = 0)
     total_quiz_count = models.IntegerField(default = 0)
     total_question_answered = models.IntegerField(default = 0)
-    counter = models.IntegerField(default = 0)
-    current_questions_list = models.CharField(max_length = 2000, blank = True, null = True)
+    #counter = models.IntegerField(default = 0)
+    #current_questions_list = models.CharField(max_length = 2000, blank = True, null = True)
     attainable_score = models.IntegerField(default = 0)
     percentage_score = models.IntegerField(default = 0)
     correct_questions = models.IntegerField(default = 0)
     wrong_questions = models.IntegerField(default = 0)
     image = models.ImageField(upload_to = 'media/')
+    timeRange = models.CharField(default = '', max_length = 255)
+    endtime = models.CharField(default = '', max_length = 255)
     mystatus = (
         ('bu', 'basic user'),
         ('au', 'advanced user'),
