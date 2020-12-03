@@ -2,17 +2,6 @@
 
 {%block content%}
 
-<div class = "row">
-    <div class = "col">
-        <p style = "padding-left:20px;display:none;" id = "endtime">{{request.user.profile.endtime}}</p>
-        <div class = "w3-panel w3-card-4">
-        <p class = "text-center" style = "margin-top:10px;">
-            <span class = "hour" style = "display:none;"></span><span class = "min btn btn-lg btn-success"></span> : <span class = "secs btn btn-lg btn-danger"></span>------------<span class = "btn btn-lg btn-warning">{{request.user.profile.counter}}</span>
-        </p>
-        </div>
-    </div>
-</div>
-
 <div class = "row w3-white" style = "padding-left:20px;padding-top:50px;padding-bottom:20px;">
     <div class = "col-md-9">
         {%for item in real_question%}

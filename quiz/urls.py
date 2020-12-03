@@ -11,5 +11,6 @@ urlpatterns = [
     path('quiz/postProcessor/', views.postProcessor, name = 'postProcessor'),
     path('quiz_page/<str:selected_subject>', views.quiz_page, name = 'quiz_page'),
     path('news/', views.NewsListView.as_view(), name = 'news'),
-    path('about/', views.about, name = 'about')
+    path('about/', views.about, name = 'about'),
+    path('contest/', views.ContestListView.as_view(), name = 'contest'),
 ]

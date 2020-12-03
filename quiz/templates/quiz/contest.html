@@ -1,0 +1,23 @@
+{%extends 'users/dboard_base.html'%}
+
+{%block content%}
+
+	{%if contest%}
+		{%for items in contest.all%}
+			<div style = "margin-top:50px;padding-left:10px;padding:50px;" class = "w3-panel w3-white">
+				<div style = "display:inline-flex">
+					<h5>{{items.name}}</h5>
+				</div>
+				<button class = "btn btn-success float-right">Apply For Contest</button>
+				<hr>
+				<div style = "display:inline-block">
+					<p>{{items.description}}</p>
+					<p class = "text-danger">Requirement: {{items.RP_requirement}}RP</p>
+				</div>
+					<p style = "display:inline;padding:15px;color:white;font-weight:bolder;" class = "float-right bg-danger"> 0 / {{items.participants}} Participants</p>
+					<hr>
+			</div>
+		{%endfor%}
+	{%endif%}
+
+{%endblock%}

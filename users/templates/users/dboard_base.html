@@ -15,6 +15,15 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 
 <!-- Top container -->
 <div class="w3-bar w3-top w3-white w3-large" style="z-index:4">
+
+  <div style = "display:inline-flex;padding-left:25%" align = "center">
+    <p style = "padding-left:20px;display:none;" id = "endtime">{{request.user.profile.endtime}}</p>
+    <div class = "">
+      <p class = "text-center" style = "margin-top:10px;">
+        <span class = "hour" style = "display:none;"></span><span class = "min btn btn-lg btn-success"></span> : <span class = "secs btn btn-lg btn-danger"></span>
+    </div>
+</div>
+
   <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
   <span class="w3-bar-item w3-right"><a href = "{%url 'index'%}">QuizNG.com</a></span>
 </div>
@@ -45,7 +54,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     <a href="{%url 'users:addQuestion' user.username%}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-book"></i> Submit a Question</a>
     <a href="{%url 'users:pendingQuestion' user.username%}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-book"></i> Pending Questions</a>
     <a href="{%url 'news'%}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i>  News</a>
-    <!--<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-chalkboard"></i>  Scoreboard</a>-->
+    <a href="{%url 'contest'%}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-chalkboard"></i>  Contests</a>
     <br><br>
   </div>
 </nav>

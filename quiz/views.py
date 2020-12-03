@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from quiz.models import Question, Choice, Category, Subject
+from quiz.models import Question, Choice, Category, Subject, Contest
 from users.models import Profile
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
@@ -24,6 +24,16 @@ def about(request):
 # Create your views here.
 def index(request):
     return render(request, 'quiz/index.html')
+
+class ContestListView(ListView):
+    model = Contest
+    template_name = 'quiz/contest.html'
+    context_object_name = 'contest'
+
+    def get_queryset(self):
+        queryset = {'all': Contest.objects.all().order_by('-register_end')}
+        return queryset
+
 
 @login_required
 def pre_quiz(request,):

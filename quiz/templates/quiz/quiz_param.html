@@ -5,13 +5,13 @@
 <div class = "row w3-white">
     <div class = "col">
     <div>
-        <h2 marker = "sub-head" align = "center" style = "margin-top:100px;"> Set Question Parameters:</h2>
+        <h2 marker = "sub-head" align = "center" style = "margin-top:50px;"> Set Question Parameters:</h2>
         <div class = "" style = "margin-right:30px;margin-left:30px; padding:20px;">
         <form method = "post" action = "" style = "margin-bottom:100px;">
             {%csrf_token%}
-                <h3>Question Parameters:</h4>
                 <div class = "row">
-                    <div class = "col-md-3">
+                    <div class = "offset-md-2 col-md-8">
+                        <hr>
                         <label for = "Question_Range">Question Range</label>
                         <select class = "form-control" name = "range">
                             <option value = "5">5</option>
@@ -21,8 +21,7 @@
                             <option value = "25">25</option>
                             <option value = "30">30</option>
                         </select>
-                    </div>
-                    <div class = "col-md-3">
+                        <hr>
                         <label for = "subject">Subject</label>
                         {%if subjects%}
                         <select class = "form-control" name = "subject">
@@ -31,9 +30,7 @@
                             {%endfor%}
                         </select>
                         {%endif%}
-                    </div>
-                    
-                    <div class = "col-md-3">
+                        <hr>
                         <label for = "Time Range">Time Range (Minutes)</label>
                         <select class = "form-control" name = "timeRange">
                             <option value = "1">1</option>
@@ -41,10 +38,8 @@
                             <option value = "10">10</option>
                             <option value = "15">15</option>
                         </select>
-                    </div>
-                    
-                    <div class = "col-md-3">
-                        <input type = "submit" value = "NEXT" class = "btn btn-outline-success" style = "margin-top:30px;">
+                        <hr>
+                        <input type = "submit" value = "NEXT" class = "btn btn-outline-success float-right" style = "">
                     </div>
                 </div>
         </form>
